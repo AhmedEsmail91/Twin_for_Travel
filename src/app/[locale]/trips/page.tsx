@@ -2,7 +2,12 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 
-import { TripFilters, TRIP_FILTERS, type TripFilter } from '@/components/trips/TripFilters';
+import { TripFilters } from '@/components/trips/TripFilters';
+import {
+  TRIP_FILTERS,
+  type TripFilter,
+} from '@/components/trips/trip-filters.constants';
+
 import { TripGrid } from '@/components/trips/TripGrid';
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
@@ -49,6 +54,10 @@ function optionsForFilter(filter: TripFilter): Omit<TripListOptions, 'published'
 }
 
 function isTripFilter(value: string | undefined): value is TripFilter {
+  console.log('TRIP_FILTERS:', TRIP_FILTERS);
+  console.log('typeof:', typeof TRIP_FILTERS);
+  console.log('isArray:', Array.isArray(TRIP_FILTERS));
+  console.log('includes:', typeof TRIP_FILTERS?.includes);
   return value !== undefined && (TRIP_FILTERS as readonly string[]).includes(value);
 }
 

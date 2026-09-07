@@ -5,10 +5,10 @@ import { useTranslations } from 'next-intl';
 
 import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
-
-export const TRIP_FILTERS = ['all', 'upcoming', 'ongoing', 'completed'] as const;
-export type TripFilter = (typeof TRIP_FILTERS)[number];
-
+import {
+  TRIP_FILTERS,
+  type TripFilter,
+} from './trip-filters.constants';
 /**
  * Filters as links rather than buttons.
  *
