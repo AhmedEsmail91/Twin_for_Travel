@@ -20,10 +20,17 @@ export async function TripCard({
   trip,
   locale,
   priority = false,
+  headingLevel = 3,
 }: {
   trip: TripWithDerived;
   locale: Locale;
   priority?: boolean;
+  /**
+   * `h3` under a section that has its own `h2` (the homepage rails), `h2` on a
+   * listing page where the card headings sit directly under the page `h1`.
+   * Skipping a level breaks the document outline for screen-reader navigation.
+   */
+  headingLevel?: 2 | 3;
 }) {
   const [t, format] = await Promise.all([
     getTranslations({ locale, namespace: 'trips.card' }),
@@ -38,6 +45,8 @@ export async function TripCard({
   const startDate = new Date(trip.startDate);
   const endDate = new Date(trip.endDate);
   const sameDay = trip.durationDays === 1;
+
+  const Heading = headingLevel === 2 ? 'h2' : 'h3';
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-lg border border-sand bg-surface shadow-card transition-shadow duration-200 hover:shadow-lifted">
@@ -78,7 +87,7 @@ export async function TripCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-h3 font-display text-navy">
+        <Heading className="text-h3 font-display text-navy">
           {/*
             The whole card is clickable via this stretched link, which keeps a single
             focusable target and a real link for keyboard and screen-reader users.
@@ -89,7 +98,7 @@ export async function TripCard({
           >
             <span className="u-clamp-2">{title}</span>
           </Link>
-        </h3>
+        </Heading>
 
         {summary ? <p className="u-clamp-2 mt-2 text-body-sm text-ink-soft">{summary}</p> : null}
 

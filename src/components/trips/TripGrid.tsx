@@ -8,11 +8,14 @@ export function TripGrid({
   locale,
   columns = 3,
   prioritiseFirst = false,
+  headingLevel = 3,
 }: {
   trips: TripWithDerived[];
   locale: Locale;
   columns?: 2 | 3;
   prioritiseFirst?: boolean;
+  /** Passed through to the cards so the document outline has no gaps. */
+  headingLevel?: 2 | 3;
 }) {
   return (
     <ul
@@ -24,7 +27,12 @@ export function TripGrid({
       {trips.map((trip, index) => (
         <li key={trip.id} className="flex">
           <div className="flex w-full">
-            <TripCard trip={trip} locale={locale} priority={prioritiseFirst && index < 3} />
+            <TripCard
+              trip={trip}
+              locale={locale}
+              priority={prioritiseFirst && index < 3}
+              headingLevel={headingLevel}
+            />
           </div>
         </li>
       ))}

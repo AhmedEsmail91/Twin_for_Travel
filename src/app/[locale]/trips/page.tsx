@@ -108,7 +108,7 @@ async function TripResults({ locale, filter }: { locale: Locale; filter: TripFil
     );
   }
 
-  return <TripGrid trips={trips} locale={locale} prioritiseFirst />;
+  return <TripGrid trips={trips} locale={locale} prioritiseFirst headingLevel={2} />;
 }
 
 function TripsLoading() {

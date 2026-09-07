@@ -52,7 +52,7 @@ export default async function PreviousTripsPage({ params }: PageProps) {
 
       <Container className="py-14">
         {trips.length > 0 ? (
-          <TripGrid trips={trips} locale={locale} prioritiseFirst />
+          <TripGrid trips={trips} locale={locale} prioritiseFirst headingLevel={2} />
         ) : (
           <EmptyState
             icon="image"
