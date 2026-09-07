@@ -25,20 +25,20 @@ application code is written.
 
 ---
 
-## PHASE 1 — Foundation — `PLANNED`
+## PHASE 1 — Foundation — `DONE`
 
 **Objective.** A running, type-checked, lint-clean Next.js application with the design system
 and bidirectional i18n in place.
 
 **Tasks**
-- [ ] Next.js 16 App Router + TypeScript (strict) + React 19
-- [ ] Tailwind CSS v4 with the brand tokens declared in `@theme`
-- [ ] `next-intl` with `/ar` (default) and `/en`, locale-aware `<html lang dir>`
-- [ ] Fonts: Cairo (Arabic), Playfair Display + Manrope (Latin), self-hosted via `next/font`
-- [ ] Environment configuration with fail-fast validation (`src/config/env.ts`)
-- [ ] Root + locale layouts, `not-found`, `error` boundaries
-- [ ] Base UI primitives (Button, Card, Badge, Input, Select, Textarea, Modal, Skeleton, …)
-- [ ] Brand assets (logo) placed in `public/brand`
+- [x] Next.js 16 App Router + TypeScript (strict) + React 19
+- [x] Tailwind CSS v4 with the brand tokens declared in `@theme`
+- [x] `next-intl` with `/ar` (default) and `/en`, locale-aware `<html lang dir>`
+- [x] Fonts: Cairo (Arabic), Playfair Display + Manrope (Latin), self-hosted via `next/font`
+- [x] Environment configuration with fail-fast validation (`src/config/env.ts`)
+- [x] Root + locale layouts, `not-found`, `error` boundaries
+- [x] Base UI primitives (Button, Card, Badge, Input, Select, Textarea, Modal, Skeleton, …)
+- [x] Brand assets (logo) placed in `public/brand`
 
 **Dependencies.** none
 
@@ -47,19 +47,19 @@ and bidirectional i18n in place.
 
 ---
 
-## PHASE 2 — Database architecture — `PLANNED`
+## PHASE 2 — Database architecture — `DONE`
 
 **Objective.** Mongoose models and a connection strategy that is safe under Next.js hot reload
 and serverless invocation.
 
 **Tasks**
-- [ ] Cached global connection (`src/lib/db/mongoose.ts`)
-- [ ] `User` (admin) model — email, passwordHash, role, timestamps
-- [ ] `Trip` model — bilingual fields, dates, pricing, capacity, status, media, ordering
-- [ ] `SocialLink` model — platform, url, label, enabled, order
-- [ ] `SiteSettings` model — singleton document, company/contact/SEO settings
-- [ ] Indexes: `trips.slug` (unique), `{published,status,startDate}`, `featured`, `displayOrder`
-- [ ] Shared `Localized` sub-schema for `{ ar, en }` fields
+- [x] Cached global connection (`src/lib/db/mongoose.ts`)
+- [x] `User` (admin) model — email, passwordHash, role, timestamps
+- [x] `Trip` model — bilingual fields, dates, pricing, capacity, status, media, ordering
+- [x] `SocialLink` model — platform, url, label, enabled, order
+- [x] `SiteSettings` model — singleton document, company/contact/SEO settings
+- [x] Indexes: `trips.slug` (unique), `{published,status,startDate}`, `featured`, `displayOrder`
+- [x] Shared `Localized` sub-schema for `{ ar, en }` fields
 
 **Dependencies.** Phase 1
 
@@ -67,19 +67,19 @@ and serverless invocation.
 
 ---
 
-## PHASE 3 — Authentication — `PLANNED`
+## PHASE 3 — Authentication — `DONE`
 
 **Objective.** Real, server-verified admin authentication.
 
 **Tasks**
-- [ ] Password hashing with `scrypt` (node:crypto) — salted, timing-safe verify
-- [ ] Session as a signed JWT (`jose`, HS256) in an `HttpOnly`, `SameSite=Lax`, `Secure` cookie
-- [ ] `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
-- [ ] `requireAdmin()` server guard used by every admin route handler and admin page
-- [ ] Middleware: locale routing + admin cookie gate (defence in depth, not the authority)
-- [ ] Login rate limiting (fixed window, per IP + email)
-- [ ] Same-origin check on all mutating API requests (CSRF)
-- [ ] `scripts/create-admin.mjs` to provision the first admin
+- [x] Password hashing with `scrypt` (node:crypto) — salted, timing-safe verify
+- [x] Session as a signed JWT (`jose`, HS256) in an `HttpOnly`, `SameSite=Lax`, `Secure` cookie
+- [x] `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
+- [x] `requireAdmin()` server guard used by every admin route handler and admin page
+- [x] Middleware: locale routing + admin cookie gate (defence in depth, not the authority)
+- [x] Login rate limiting (fixed window, per IP + email)
+- [x] Same-origin check on all mutating API requests (CSRF)
+- [x] `scripts/create-admin.mjs` to provision the first admin
 
 **Dependencies.** Phase 2
 
@@ -88,17 +88,17 @@ admin APIs return `401` with the standard error envelope.
 
 ---
 
-## PHASE 4 — Trip module & API — `PLANNED`
+## PHASE 4 — Trip module & API — `DONE`
 
 **Objective.** Full trip CRUD behind a clean module boundary.
 
 **Tasks**
-- [ ] `trip.types.ts`, `trip.schema.ts` (Zod), `trip.model.ts`
-- [ ] `trip.repository.ts` — every Mongoose query lives here
-- [ ] `trip.service.ts` — slug uniqueness, status derivation, publish rules, business errors
-- [ ] `trip.controller.ts` — request → validated input → service → response envelope
-- [ ] `GET|POST /api/trips`, `GET|PATCH|DELETE /api/trips/[id]`
-- [ ] Public read paths used directly by Server Components (no self-HTTP)
+- [x] `trip.types.ts`, `trip.schema.ts` (Zod), `trip.model.ts`
+- [x] `trip.repository.ts` — every Mongoose query lives here
+- [x] `trip.service.ts` — slug uniqueness, status derivation, publish rules, business errors
+- [x] `trip.controller.ts` — request → validated input → service → response envelope
+- [x] `GET|POST /api/trips`, `GET|PATCH|DELETE /api/trips/[id]`
+- [x] Public read paths used directly by Server Components (no self-HTTP)
 
 **Dependencies.** Phase 2, 3
 
@@ -107,15 +107,15 @@ returned as `422` and duplicate slugs as `409`.
 
 ---
 
-## PHASE 5 — Settings & social module — `PLANNED`
+## PHASE 5 — Settings & social module — `DONE`
 
 **Objective.** Every business-configurable value comes from the database.
 
 **Tasks**
-- [ ] `SocialLink` module + `GET|POST /api/social`, `PATCH|DELETE /api/social/[id]`
-- [ ] `SiteSettings` module + `GET|PUT /api/settings`
-- [ ] `getSiteSettings()` server helper with request-level `cache()` and safe defaults
-- [ ] WhatsApp number, contact details and social URLs consumed from settings only
+- [x] `SocialLink` module + `GET|POST /api/social`, `PATCH|DELETE /api/social/[id]`
+- [x] `SiteSettings` module + `GET|PUT /api/settings`
+- [x] `getSiteSettings()` server helper with request-level `cache()` and safe defaults
+- [x] WhatsApp number, contact details and social URLs consumed from settings only
 
 **Dependencies.** Phase 2, 3
 
@@ -124,18 +124,18 @@ and every reservation CTA on the public site.
 
 ---
 
-## PHASE 6 — Public website — `PLANNED`
+## PHASE 6 — Public website — `DONE`
 
 **Objective.** The premium bilingual travel site.
 
 **Tasks**
-- [ ] Header with logo, locale switcher, mobile menu
-- [ ] Hero, featured trips, upcoming trips, why-travel-with-us, previous trips, gallery, CTA
-- [ ] `/[locale]/trips` with status filtering, `/[locale]/trips/[slug]` detail page
-- [ ] `/[locale]/previous-trips`, `/[locale]/about`, `/[locale]/contact`
-- [ ] `TripCard`, `TripGrid`, `TripGallery` (client, keyboard-navigable), `TripStatusBadge`
-- [ ] Footer, floating WhatsApp button, expandable social menu
-- [ ] Loading / empty / error states for every async surface
+- [x] Header with logo, locale switcher, mobile menu
+- [x] Hero, featured trips, upcoming trips, why-travel-with-us, previous trips, gallery, CTA
+- [x] `/[locale]/trips` with status filtering, `/[locale]/trips/[slug]` detail page
+- [x] `/[locale]/previous-trips`, `/[locale]/about`, `/[locale]/contact`
+- [x] `TripCard`, `TripGrid`, `TripGallery` (client, keyboard-navigable), `TripStatusBadge`
+- [x] Footer, floating WhatsApp button, expandable social menu
+- [x] Loading / empty / error states for every async surface
 
 **Dependencies.** Phase 4, 5
 
@@ -144,18 +144,18 @@ horizontal overflow from mobile to large desktop.
 
 ---
 
-## PHASE 7 — Admin dashboard — `PLANNED`
+## PHASE 7 — Admin dashboard — `DONE`
 
 **Objective.** A practical internal management system.
 
 **Tasks**
-- [ ] Admin shell — navy sidebar, header, responsive drawer
-- [ ] Login page, logout
-- [ ] Overview with real counts (total / upcoming / completed / draft / featured)
-- [ ] Trip table — search, status/published/featured filters, sorting, pagination
-- [ ] Trip create & edit form — bilingual tabs, dates, pricing, capacity, services, gallery
-- [ ] Delete with confirmation, publish/unpublish, feature toggle
-- [ ] Social link management, site settings form
+- [x] Admin shell — navy sidebar, header, responsive drawer
+- [x] Login page, logout
+- [x] Overview with real counts (total / upcoming / completed / draft / featured)
+- [x] Trip table — search, status/published/featured filters, sorting, pagination
+- [x] Trip create & edit form — bilingual tabs, dates, pricing, capacity, services, gallery
+- [x] Delete with confirmation, publish/unpublish, feature toggle
+- [x] Social link management, site settings form
 
 **Dependencies.** Phase 4, 5
 
@@ -163,17 +163,17 @@ horizontal overflow from mobile to large desktop.
 
 ---
 
-## PHASE 8 — Image management — `PLANNED`
+## PHASE 8 — Image management — `DONE`
 
 **Objective.** Provider-agnostic media handling.
 
 **Tasks**
-- [ ] `StorageProvider` interface (`upload`, `delete`, `getUrl`)
-- [ ] `LocalStorageProvider` (development) and `CloudinaryStorageProvider` (production)
-- [ ] Provider selected by `STORAGE_PROVIDER`; business code never imports a provider directly
-- [ ] Upload validation: extension, declared MIME, **magic-byte sniffing**, size, dimensions
-- [ ] `POST /api/uploads`, `DELETE /api/uploads`
-- [ ] Cover image + gallery management with reordering in the admin trip form
+- [x] `StorageProvider` interface (`upload`, `delete`, `getUrl`)
+- [x] `LocalStorageProvider` (development) and `CloudinaryStorageProvider` (production)
+- [x] Provider selected by `STORAGE_PROVIDER`; business code never imports a provider directly
+- [x] Upload validation: extension, declared MIME, **magic-byte sniffing**, size, dimensions
+- [x] `POST /api/uploads`, `DELETE /api/uploads`
+- [x] Cover image + gallery management with reordering in the admin trip form
 
 **Dependencies.** Phase 3, 4
 
@@ -181,17 +181,17 @@ horizontal overflow from mobile to large desktop.
 
 ---
 
-## PHASE 9 — SEO, accessibility, performance — `PLANNED`
+## PHASE 9 — SEO, accessibility, performance — `DONE`
 
 **Objective.** Production polish.
 
 **Tasks**
-- [ ] Per-page metadata, dynamic trip metadata, Open Graph, canonical + `hreflang` alternates
-- [ ] `robots.ts`, `sitemap.ts` (includes published trips in both locales)
-- [ ] JSON-LD (`TravelAgency`, `TouristTrip`) on the relevant pages
-- [ ] Semantic landmarks, heading hierarchy, skip link, visible focus rings, labelled controls
-- [ ] `next/image` everywhere with sizes; `Suspense` boundaries around data sections
-- [ ] Security headers (CSP-adjacent set, HSTS, referrer, frame, nosniff)
+- [x] Per-page metadata, dynamic trip metadata, Open Graph, canonical + `hreflang` alternates
+- [x] `robots.ts`, `sitemap.ts` (includes published trips in both locales)
+- [x] JSON-LD (`TravelAgency`, `TouristTrip`) on the relevant pages
+- [x] Semantic landmarks, heading hierarchy, skip link, visible focus rings, labelled controls
+- [x] `next/image` everywhere with sizes; `Suspense` boundaries around data sections
+- [x] Security headers (CSP-adjacent set, HSTS, referrer, frame, nosniff)
 
 **Dependencies.** Phase 6, 7
 
@@ -200,18 +200,23 @@ locale-correct.
 
 ---
 
-## PHASE 10 — Verification & hardening — `PLANNED`
+## PHASE 10 — Verification & hardening — `PARTIAL`
 
 **Objective.** Prove the definition of done.
 
 **Tasks**
-- [ ] `npm run typecheck` clean
-- [ ] `npm run lint` clean
-- [ ] `npm run build` succeeds
-- [ ] `scripts/seed.mjs` — settings, social links and sample bilingual trips for smoke-testing
-- [ ] Manual test matrix recorded in `docs/TESTING.md`
-- [ ] `.env.example` documented
-- [ ] `CLAUDE.md` reflects the delivered architecture
+- [x] `npm run typecheck` clean
+- [x] `npm run lint` clean
+- [x] `npm run build` succeeds
+- [x] `scripts/seed.mjs` — settings, social links and sample bilingual trips for smoke-testing
+- [x] Manual test matrix recorded in `docs/TESTING.md`
+- [x] `.env.example` documented
+- [x] `CLAUDE.md` reflects the delivered architecture
+- [x] Verified against a real MongoDB and a real browser: auth, CSRF, trip CRUD,
+      validation, upload rejection, status lifecycle, settings propagation
+- [x] Layout/accessibility sweep — 10 pages × 6 widths, no issues
+- [ ] **Automated suite (Vitest + Playwright) wired into `npm run check`** — not done;
+      this is the one outstanding item, tracked in CLAUDE.md §26
 
 **Dependencies.** all
 

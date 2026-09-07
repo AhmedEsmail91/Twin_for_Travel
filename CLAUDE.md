@@ -351,9 +351,12 @@ add a test framework without wiring it into `npm run check`.
 
 ## 25. Current implementation status
 
-Phase 0 complete: references analysed, design system derived, architecture and data model
-decided, documentation written. Phases 1–10 are tracked in `docs/IMPLEMENTATION_PLAN.md`,
-which is the authoritative status board — update it as work lands.
+Phases 0–9 are complete and Phase 10 is partial: the public site, the admin dashboard,
+the API, image handling, i18n/RTL, SEO and accessibility are all delivered and were
+verified against a real MongoDB and a real browser. The one outstanding item is the
+**automated test suite** — `docs/TESTING.md` holds the manual matrix in the meantime.
+
+`docs/IMPLEMENTATION_PLAN.md` is the authoritative status board — update it as work lands.
 
 ## 26. Future planned work
 
