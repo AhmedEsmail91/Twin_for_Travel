@@ -32,8 +32,8 @@ const envSchema = z
 
     NEXT_PUBLIC_APP_URL: z
       .string()
-      .url('NEXT_PUBLIC_APP_URL must be an absolute URL, e.g. http://localhost:3000')
-      .default('http://localhost:3000'),
+      .url('NEXT_PUBLIC_APP_URL must be an absolute URL, e.g. http://localhost:4500')
+      .default('http://localhost:4500'),
 
     SITE_TIMEZONE: z.string().min(1).default('Africa/Cairo'),
 

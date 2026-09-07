@@ -23,7 +23,7 @@ export const SITE = {
 } as const;
 
 export const APP_URL =
-  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';
+  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? 'http://localhost:4500';
 
 /** Name of the admin session cookie. Referenced by middleware and the auth module. */
 export const SESSION_COOKIE = 'tft_session';

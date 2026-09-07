@@ -284,7 +284,7 @@ npm install
 cp .env.example .env.local     # then fill MONGODB_URI and AUTH_SECRET
 npm run create-admin           # provision the first admin user
 npm run seed                   # optional sample settings, social links and trips
-npm run dev                    # http://localhost:3000  → /ar
+npm run dev                    # http://localhost:4500  → /ar
 npm run typecheck
 npm run lint
 npm run build
