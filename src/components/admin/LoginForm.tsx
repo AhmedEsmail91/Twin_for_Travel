@@ -67,8 +67,20 @@ export function LoginForm({ nextPath }: { nextPath?: string }) {
     }
   }
 
+  /*
+   * `method="post"` matters even though submission is handled in JS: without it a
+   * form falls back to GET, and if the handler ever fails to run the browser would
+   * put the email and password in the query string, where they reach history,
+   * referrers and server logs. The endpoint itself is POST-only.
+   */
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
+    <form
+      method="post"
+      action="/api/auth/login"
+      onSubmit={onSubmit}
+      noValidate
+      className="flex flex-col gap-4"
+    >
       <h2 className="text-h3 text-navy">Sign in</h2>
 
       {formError ? <Alert tone="danger">{formError}</Alert> : null}

@@ -177,7 +177,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
   const suggestedSlug = slugFromTitle(state.title);
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-8 pb-24">
+    <form method="post" onSubmit={onSubmit} noValidate className="flex flex-col gap-8 pb-24">
       {formError ? <Alert tone="danger" title="The trip was not saved">{formError}</Alert> : null}
       {success ? <Alert tone="success">{success}</Alert> : null}
 

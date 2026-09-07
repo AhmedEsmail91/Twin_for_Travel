@@ -242,8 +242,11 @@ only — a serverless deployment must use Cloudinary or another object store.
 
 - Validate every input with Zod on the server, always. Client validation is UX only.
 - Never interpolate user input into a Mongo query object; repositories build typed filters.
-- Mutating API requests must pass the same-origin check (`Origin`/`Referer` vs the app URL) —
-  combined with `SameSite=Lax` cookies this is our CSRF defence.
+- Mutating API requests must pass the same-origin check — `Origin`/`Referer` compared against
+  the origin the request **actually arrived on** (from `Host`), with `NEXT_PUBLIC_APP_URL`
+  also accepted for proxied deployments. Combined with `SameSite=Lax` cookies this is our
+  CSRF defence. Deriving the expected origin from the request rather than from configuration
+  alone means a port mismatch cannot silently 403 every admin save.
 - Never render untrusted HTML. `dangerouslySetInnerHTML` is used **only** for JSON-LD built
   from our own data.
 - Security headers are set in `next.config.ts`.

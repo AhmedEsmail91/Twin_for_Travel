@@ -76,7 +76,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6 pb-24">
+    <form method="post" onSubmit={onSubmit} noValidate className="flex flex-col gap-6 pb-24">
       {error ? <Alert tone="danger">{error}</Alert> : null}
       {success ? <Alert tone="success">{success}</Alert> : null}
 

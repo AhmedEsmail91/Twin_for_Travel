@@ -54,10 +54,6 @@ function optionsForFilter(filter: TripFilter): Omit<TripListOptions, 'published'
 }
 
 function isTripFilter(value: string | undefined): value is TripFilter {
-  console.log('TRIP_FILTERS:', TRIP_FILTERS);
-  console.log('typeof:', typeof TRIP_FILTERS);
-  console.log('isArray:', Array.isArray(TRIP_FILTERS));
-  console.log('includes:', typeof TRIP_FILTERS?.includes);
   return value !== undefined && (TRIP_FILTERS as readonly string[]).includes(value);
 }
 

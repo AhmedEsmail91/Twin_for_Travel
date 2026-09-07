@@ -165,13 +165,15 @@ export async function getTripCounts(): Promise<Record<string, number>> {
  * ------------------------------------------------------------------------- */
 
 export async function createTrip(input: CreateTripInput): Promise<TripWithDerived> {
+  const published = resolvePublishState(input.status, input.published, false);
   const slug = await resolveSlug(input.slug ?? slugFromTitle(input.title));
   const data = toDocument(input);
 
   const trip = await repository.insertTrip({
     ...data,
     slug,
-    status: normaliseStatus(input.status, input.startDate, input.endDate, input.published),
+    published,
+    status: normaliseStatus(input.status, input.startDate, input.endDate, published),
   });
 
   return withDerived(trip);
@@ -186,7 +188,7 @@ export async function updateTrip(id: string, input: UpdateTripInput): Promise<Tr
    * the trip as it will be after the merge — an update that sets `published: true`
    * without touching the cover is valid when one is already stored.
    */
-  const willBePublished = input.published ?? existing.published;
+  const willBePublished = resolvePublishState(input.status, input.published, existing.published);
   const willHaveCover =
     input.coverImage !== undefined ? input.coverImage !== null : existing.coverImage !== null;
 
@@ -199,6 +201,10 @@ export async function updateTrip(id: string, input: UpdateTripInput): Promise<Tr
   }
 
   const data = toDocument(input);
+
+  // `resolvePublishState` may unpublish in response to a DRAFT status, so the flag
+  // is written from the resolved value rather than straight from the request.
+  if (willBePublished !== existing.published) data.published = willBePublished;
 
   if (input.slug !== undefined) {
     const candidate = slugify(input.slug);
@@ -250,9 +256,10 @@ export async function deleteTrip(id: string): Promise<TripWithDerived> {
  * persist what the dates imply, so the database and the UI agree even when a query
  * filters on `status` directly.
  *
- * `DRAFT` is the *unpublished* state, so it cannot coexist with `published: true` —
- * publishing a trip moves it onto the date-derived lifecycle. `CANCELLED` is a real
- * business state and survives publication.
+ * `DRAFT` is the *unpublished* state, so it cannot coexist with `published: true`.
+ * Rather than quietly overriding one of the two, the caller resolves the conflict
+ * before reaching here — see `resolvePublishState`. `CANCELLED` is a real business
+ * state and survives publication.
  */
 function normaliseStatus(
   status: TripStatus | undefined,
@@ -268,6 +275,32 @@ function normaliseStatus(
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
   });
+}
+
+/**
+ * Reconciles an explicit `status` choice with the `published` flag.
+ *
+ * Choosing `DRAFT` means "take this off the site" — so it unpublishes, rather than
+ * being silently replaced by the date-derived status, which looked to the admin
+ * like the status control simply did nothing. Asking for both `DRAFT` and
+ * `published: true` in one request is contradictory, and is rejected with a message
+ * that says which two settings disagree.
+ */
+function resolvePublishState(
+  requestedStatus: TripStatus | undefined,
+  requestedPublished: boolean | undefined,
+  currentPublished: boolean,
+): boolean {
+  if (requestedStatus !== 'DRAFT') return requestedPublished ?? currentPublished;
+
+  if (requestedPublished === true) {
+    throw new ValidationError('A draft cannot be published. Set the status first, or publish it.', {
+      status: ['A published trip cannot be a draft. Choose another status, or untick Published.'],
+    });
+  }
+
+  // The admin picked Draft: honour it by taking the trip off the site.
+  return false;
 }
 
 async function resolveSlug(base: string): Promise<string> {
