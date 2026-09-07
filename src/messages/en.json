@@ -1,0 +1,256 @@
+{
+  "common": {
+    "brandTagline": "Explore • Discover • Enjoy",
+    "loading": "Loading…",
+    "readMore": "Details",
+    "viewAll": "View all",
+    "backToTrips": "Back to trips",
+    "skipToContent": "Skip to content",
+    "menu": "Menu",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "image": "Image",
+    "of": "of",
+    "perPerson": "per person",
+    "seats": "seats",
+    "day": "day",
+    "days": "days",
+    "night": "night",
+    "nights": "nights",
+    "from": "From",
+    "to": "to",
+    "language": "Language",
+    "switchLanguage": "Switch language"
+  },
+  "nav": {
+    "home": "Home",
+    "trips": "Trips",
+    "previousTrips": "Past trips",
+    "about": "About",
+    "contact": "Contact",
+    "bookNow": "Book now"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Guided travel across Egypt",
+      "title": "Discover Egypt the way it deserves",
+      "subtitle": "Carefully planned trips, comfortable private transport, and guides who know every story. We handle the details — you enjoy the journey.",
+      "primaryCta": "Explore trips",
+      "secondaryCta": "Talk to us",
+      "stats": {
+        "trips": "trips organised",
+        "destinations": "destinations",
+        "travellers": "happy travellers"
+      }
+    },
+    "featured": {
+      "eyebrow": "Handpicked",
+      "title": "Featured trips",
+      "subtitle": "Our most requested journeys this season."
+    },
+    "upcoming": {
+      "eyebrow": "Coming up",
+      "title": "Upcoming trips",
+      "subtitle": "Reserve your seat before the group fills up.",
+      "empty": "No upcoming trips are announced right now. Message us for the next available dates."
+    },
+    "why": {
+      "eyebrow": "Why us",
+      "title": "Travel with peace of mind",
+      "subtitle": "Real experience running trips inside Egypt, and standards we don't compromise on.",
+      "items": {
+        "transport": {
+          "title": "Comfortable private transport",
+          "body": "Clean, air-conditioned vehicles with professional drivers who know every destination."
+        },
+        "guides": {
+          "title": "Experienced hosts",
+          "body": "An Arabic and English speaking team that knows the history behind every site you visit."
+        },
+        "pricing": {
+          "title": "Transparent pricing",
+          "body": "The published price covers exactly what is listed — no surprises at the end of the trip."
+        },
+        "support": {
+          "title": "Support throughout",
+          "body": "Direct WhatsApp contact before, during and after the journey."
+        }
+      }
+    },
+    "previous": {
+      "eyebrow": "Memories",
+      "title": "Where we've been",
+      "subtitle": "Moments from trips we've run with our guests.",
+      "cta": "See all memories",
+      "empty": "Photos from our past trips will appear here soon."
+    },
+    "gallery": {
+      "eyebrow": "On the road",
+      "title": "Scenes from our trips",
+      "subtitle": "Photographs taken by our team and our guests along the way."
+    },
+    "cta": {
+      "eyebrow": "Ready to go?",
+      "title": "Plan your next trip with us",
+      "subtitle": "Message us on WhatsApp and we'll help you pick the right trip and arrange every detail.",
+      "whatsapp": "Chat on WhatsApp",
+      "browse": "Browse trips"
+    }
+  },
+  "trips": {
+    "title": "Our trips",
+    "subtitle": "Every published trip — upcoming, running and completed.",
+    "filters": {
+      "label": "Filter",
+      "all": "All",
+      "upcoming": "Upcoming",
+      "ongoing": "Ongoing",
+      "completed": "Completed"
+    },
+    "empty": {
+      "title": "Nothing here yet",
+      "body": "Try a different filter, or message us about upcoming dates."
+    },
+    "error": {
+      "title": "Couldn't load trips",
+      "body": "Something went wrong while fetching the trips. Please try again.",
+      "retry": "Try again"
+    },
+    "card": {
+      "seatsLeft": "{count} seats left",
+      "soldOut": "Fully booked",
+      "priceFrom": "From",
+      "duration": "{count, plural, =1 {# day} other {# days}}",
+      "details": "Trip details"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "UPCOMING": "Upcoming",
+      "ONGOING": "Happening now",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "previousTrips": {
+    "title": "Past trips",
+    "subtitle": "Our archive — destinations we've visited and moments we've shared with our guests.",
+    "empty": {
+      "title": "No past trips published",
+      "body": "We'll add memories here as soon as our trips wrap up."
+    }
+  },
+  "tripDetail": {
+    "overview": "About this trip",
+    "gallery": "Gallery",
+    "entertainment": "Activities & entertainment",
+    "included": "What's included",
+    "excluded": "What's not included",
+    "transportation": "Transport",
+    "meetingPoint": "Meeting point",
+    "notes": "Important notes",
+    "reservation": "Reservation information",
+    "schedule": "Schedule",
+    "startDate": "Departure",
+    "endDate": "Return",
+    "duration": "Duration",
+    "reservationWindow": "Reservation window",
+    "reservationOpen": "Reservations open until {date}",
+    "reservationOpensOn": "Reservations open on {date}",
+    "reservationClosed": "Reservations have closed",
+    "price": "Price",
+    "availability": "Availability",
+    "seatsAvailable": "{available} of {capacity} seats",
+    "destination": "Destination",
+    "bookViaWhatsapp": "Reserve on WhatsApp",
+    "contactUs": "Contact us",
+    "whatsappMessage": "Hello, I'd like to ask about the \"{trip}\" trip.",
+    "completedNotice": "This trip has finished. Browse the photos, and message us to hear when we run it again.",
+    "cancelledNotice": "This trip was cancelled. Get in touch and we'll suggest alternatives.",
+    "relatedTitle": "You might also like"
+  },
+  "about": {
+    "title": "About us",
+    "subtitle": "An Egyptian travel company running day trips and multi-day journeys across Egypt.",
+    "storyTitle": "Our story",
+    "story": "We started with a single trip and a small group of friends. Today we run regular journeys to Egypt's most rewarding destinations. What hasn't changed is the method: plan every detail in advance, choose comfortable transport, and leave our guests free to enjoy the place instead of worrying about logistics.",
+    "valuesTitle": "What we stand for",
+    "values": {
+      "comfort": { "title": "Comfort first", "body": "Air-conditioned vehicles, realistic timings, and proper rest stops." },
+      "clarity": { "title": "Complete clarity", "body": "The itinerary, the price and what it covers are published before you book." },
+      "care": { "title": "Personal attention", "body": "Sensible group sizes and direct contact with every guest." }
+    },
+    "ctaTitle": "Want to know more?",
+    "ctaBody": "Message us on WhatsApp and we'll answer every question."
+  },
+  "contact": {
+    "title": "Contact us",
+    "subtitle": "WhatsApp is the fastest way to book or ask a question — we usually reply within minutes.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappBody": "For bookings and quick questions.",
+    "phoneTitle": "Phone",
+    "emailTitle": "Email",
+    "addressTitle": "Address",
+    "hoursTitle": "Opening hours",
+    "followTitle": "Follow us",
+    "followBody": "New trips and photos, first."
+  },
+  "footer": {
+    "about": "An Egyptian travel company running day trips and multi-day journeys to Egypt's finest destinations.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "follow": "Follow",
+    "rights": "All rights reserved.",
+    "builtWith": "Egyptian journeys, local expertise."
+  },
+  "social": {
+    "menuLabel": "Contact channels",
+    "openMenu": "Open contact menu",
+    "closeMenu": "Close contact menu",
+    "whatsappAria": "Contact us on WhatsApp",
+    "whatsappDefaultMessage": "Hello, I'd like to ask about your trips.",
+    "platforms": {
+      "whatsapp": "WhatsApp",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "telegram": "Telegram",
+      "youtube": "YouTube",
+      "x": "X",
+      "website": "Website"
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "Page not found",
+      "body": "The link you opened is incorrect or no longer available.",
+      "cta": "Back to home"
+    },
+    "tripNotFound": {
+      "title": "Trip not found",
+      "body": "This trip may have been removed, or it hasn't been published yet.",
+      "cta": "Browse all trips"
+    },
+    "generic": {
+      "title": "Something went wrong",
+      "body": "We couldn't display this content. Please try again in a moment.",
+      "cta": "Try again"
+    }
+  },
+  "meta": {
+    "home": {
+      "title": "Twin for Travel — Egyptian journeys, local expertise",
+      "description": "Guided trips across Egypt with comfortable private transport and transparent pricing. Browse upcoming trips and reserve on WhatsApp."
+    },
+    "trips": {
+      "title": "Trips",
+      "description": "Every published trip across Egypt — dates, prices and exactly what's included."
+    },
+    "previousTrips": {
+      "title": "Past trips",
+      "description": "An archive of our previous trips and photographs from the destinations we've visited."
+    },
+    "about": { "title": "About us", "description": "Meet Twin for Travel and the way we plan and run our trips." },
+    "contact": { "title": "Contact us", "description": "Reach us on WhatsApp, by phone or by email for bookings and enquiries." }
+  }
+}
