@@ -2,7 +2,7 @@ import 'server-only';
 
 import { Schema, model, models, type Model, type Types } from 'mongoose';
 
-import { baseToJSON, localizedField } from '@/lib/db/schema-helpers';
+import { baseSerialisation, localizedField } from '@/lib/db/schema-helpers';
 import type { Localized } from '@/types/common';
 
 /**
@@ -55,7 +55,7 @@ const settingsSchema = new Schema<SiteSettingsDocument>(
     seoTitle: localizedField({ maxLength: 120 }),
     seoDescription: localizedField({ maxLength: 300 }),
   },
-  { timestamps: true, toJSON: baseToJSON, toObject: baseToJSON },
+  { timestamps: true, toJSON: baseSerialisation, toObject: baseSerialisation },
 );
 
 settingsSchema.index({ key: 1 }, { unique: true });

@@ -3,7 +3,7 @@ import 'server-only';
 import { cache } from 'react';
 
 import { env } from '@/config/env';
-import { ConflictError, NotFoundError } from '@/lib/http/errors';
+import { ConflictError, NotFoundError, ValidationError } from '@/lib/http/errors';
 import { durationInDays, startOfDayInZone } from '@/lib/utils/dates';
 import { nextSlugCandidate, slugFromTitle, slugify } from '@/lib/utils/slug';
 import type { TripDocument } from './trip.model';
@@ -156,7 +156,7 @@ export async function createTrip(input: CreateTripInput): Promise<TripWithDerive
   const trip = await repository.insertTrip({
     ...data,
     slug,
-    status: normaliseStatus(input.status, input.startDate, input.endDate),
+    status: normaliseStatus(input.status, input.startDate, input.endDate, input.published),
   });
 
   return withDerived(trip);
@@ -165,6 +165,21 @@ export async function createTrip(input: CreateTripInput): Promise<TripWithDerive
 export async function updateTrip(id: string, input: UpdateTripInput): Promise<TripWithDerived> {
   const existing = await repository.findTripById(id);
   if (!existing) throw new NotFoundError('Trip not found', 'TRIP_NOT_FOUND');
+
+  /*
+   * The schema can only see the request, so publishing is re-checked here against
+   * the trip as it will be after the merge — an update that sets `published: true`
+   * without touching the cover is valid when one is already stored.
+   */
+  const willBePublished = input.published ?? existing.published;
+  const willHaveCover =
+    input.coverImage !== undefined ? input.coverImage !== null : existing.coverImage !== null;
+
+  if (willBePublished && !willHaveCover) {
+    throw new ValidationError('The submitted data is invalid', {
+      coverImage: ['Add a cover image before publishing this trip'],
+    });
+  }
 
   const data = toDocument(input);
 
@@ -178,10 +193,23 @@ export async function updateTrip(id: string, input: UpdateTripInput): Promise<Tr
     }
   }
 
-  if (input.status !== undefined) {
-    const startDate = input.startDate ?? new Date(existing.startDate);
-    const endDate = input.endDate ?? new Date(existing.endDate);
-    data.status = normaliseStatus(input.status, startDate, endDate);
+  /*
+   * Re-derive whenever anything the status depends on moves — the status itself, the
+   * dates, or the published flag. Otherwise a trip published from a draft, or one
+   * whose dates were pushed back, would keep a stale stored status.
+   */
+  if (
+    input.status !== undefined ||
+    input.startDate !== undefined ||
+    input.endDate !== undefined ||
+    input.published !== undefined
+  ) {
+    data.status = normaliseStatus(
+      input.status ?? existing.status,
+      input.startDate ?? new Date(existing.startDate),
+      input.endDate ?? new Date(existing.endDate),
+      willBePublished,
+    );
   }
 
   const updated = await repository.updateTripById(id, data);
@@ -204,11 +232,22 @@ export async function deleteTrip(id: string): Promise<TripWithDerived> {
  * A stored status is only meaningful for the two manual states. For the rest we
  * persist what the dates imply, so the database and the UI agree even when a query
  * filters on `status` directly.
+ *
+ * `DRAFT` is the *unpublished* state, so it cannot coexist with `published: true` —
+ * publishing a trip moves it onto the date-derived lifecycle. `CANCELLED` is a real
+ * business state and survives publication.
  */
-function normaliseStatus(status: TripStatus | undefined, startDate: Date, endDate: Date): TripStatus {
-  if (status === 'DRAFT' || status === 'CANCELLED') return status;
+function normaliseStatus(
+  status: TripStatus | undefined,
+  startDate: Date,
+  endDate: Date,
+  published: boolean,
+): TripStatus {
+  if (status === 'CANCELLED') return status;
+  if (status === 'DRAFT' && !published) return status;
+
   return deriveStatus({
-    status: status ?? 'UPCOMING',
+    status: 'UPCOMING',
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
   });

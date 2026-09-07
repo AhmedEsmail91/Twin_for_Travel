@@ -48,15 +48,13 @@ export function localizedListField(options: { maxItemLength?: number } = {}) {
 }
 
 /**
- * Shared `toJSON` transform: expose `id`, hide Mongo's internals.
- * Repositories return plain objects, so this keeps their shape consistent.
+ * Shared serialisation options.
+ *
+ * Deliberately does *not* rename `_id` to `id`: the repositories are the mapping
+ * layer, and a transform that strips `_id` here would silently break them. Keeping
+ * one place that shapes the domain object avoids that whole class of bug.
  */
-export const baseToJSON = {
-  virtuals: true,
+export const baseSerialisation = {
+  virtuals: false,
   versionKey: false,
-  transform(_document: unknown, record: Record<string, unknown>) {
-    record.id = String(record._id);
-    delete record._id;
-    return record;
-  },
 } as const;

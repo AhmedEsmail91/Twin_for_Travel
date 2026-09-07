@@ -2,7 +2,7 @@ import 'server-only';
 
 import { Schema, model, models, type Model, type Types } from 'mongoose';
 
-import { baseToJSON } from '@/lib/db/schema-helpers';
+import { baseSerialisation } from '@/lib/db/schema-helpers';
 import { USER_ROLES, type UserRole } from './auth.types';
 
 export type UserDocument = {
@@ -31,7 +31,7 @@ const userSchema = new Schema<UserDocument>(
     role: { type: String, enum: USER_ROLES, default: 'admin', required: true },
     lastLoginAt: { type: Date, default: null },
   },
-  { timestamps: true, toJSON: baseToJSON, toObject: baseToJSON },
+  { timestamps: true, toJSON: baseSerialisation, toObject: baseSerialisation },
 );
 
 // One account per address; also the index behind the login lookup.

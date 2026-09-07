@@ -2,7 +2,7 @@ import 'server-only';
 
 import { Schema, model, models, type Model, type Types } from 'mongoose';
 
-import { baseToJSON } from '@/lib/db/schema-helpers';
+import { baseSerialisation } from '@/lib/db/schema-helpers';
 import { SOCIAL_PLATFORMS, type SocialPlatform } from './social.types';
 
 export type SocialLinkDocument = {
@@ -24,7 +24,7 @@ const socialLinkSchema = new Schema<SocialLinkDocument>(
     enabled: { type: Boolean, default: true },
     displayOrder: { type: Number, default: 0, min: 0, max: 999 },
   },
-  { timestamps: true, toJSON: baseToJSON, toObject: baseToJSON },
+  { timestamps: true, toJSON: baseSerialisation, toObject: baseSerialisation },
 );
 
 // One entry per platform keeps the admin list unambiguous.

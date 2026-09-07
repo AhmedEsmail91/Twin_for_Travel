@@ -2,7 +2,7 @@ import 'server-only';
 
 import { Schema, model, models, type Model, type Types } from 'mongoose';
 
-import { baseToJSON, localizedField, localizedListField } from '@/lib/db/schema-helpers';
+import { baseSerialisation, localizedField, localizedListField } from '@/lib/db/schema-helpers';
 import { CURRENCIES, TRIP_STATUSES, type Currency, type TripStatus } from './trip.types';
 import type { Localized, LocalizedList } from '@/types/common';
 
@@ -110,7 +110,7 @@ const tripSchema = new Schema<TripDocument>(
     importantNotes: localizedListField({ maxItemLength: 500 }),
     reservationInformation: localizedField({ maxLength: 2000 }),
   },
-  { timestamps: true, toJSON: baseToJSON, toObject: baseToJSON },
+  { timestamps: true, toJSON: baseSerialisation, toObject: baseSerialisation },
 );
 
 /*

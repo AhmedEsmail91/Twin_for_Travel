@@ -28,8 +28,19 @@ export const createSocialLinkSchema = z.object({
   displayOrder: z.coerce.number().int().min(0).max(999).default(0),
 });
 
-export const updateSocialLinkSchema = createSocialLinkSchema
-  .partial()
+/**
+ * Declared without defaults rather than as `createSocialLinkSchema.partial()`:
+ * `.partial()` keeps a field's `.default()`, so a PATCH toggling `enabled` would
+ * also reset the label and the display order. See trip.schema.ts for the same note.
+ */
+export const updateSocialLinkSchema = z
+  .object({
+    platform: z.enum(SOCIAL_PLATFORMS, { error: 'Choose a platform' }).optional(),
+    url: httpUrl.optional(),
+    label: z.string().trim().max(60).optional(),
+    enabled: z.boolean().optional(),
+    displayOrder: z.coerce.number().int().min(0).max(999).optional(),
+  })
   .refine((value) => Object.keys(value).length > 0, 'Provide at least one field to update');
 
 export type CreateSocialLinkInput = z.infer<typeof createSocialLinkSchema>;
