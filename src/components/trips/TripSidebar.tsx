@@ -35,27 +35,40 @@ export async function TripSidebar({
     ? buildWhatsappUrl(settings.whatsappNumber, t('whatsappMessage', { trip: title }))
     : '';
 
-  const reservationNote = reservationStatus();
+  /*
+   * `reservationState` is computed in the service against the company's timezone.
+   * Reading the clock here instead would make this component impure — it could
+   * render one thing on the server and another on a client re-render.
+   */
+  const reservationNote = ((): { text: string; tone: 'open' | 'closed' } | null => {
+    switch (trip.reservationState) {
+      case 'not-yet-open':
+        return trip.reservationStartDate
+          ? {
+              text: t('reservationOpensOn', {
+                date: format.dateTime(new Date(trip.reservationStartDate), 'long'),
+              }),
+              tone: 'closed',
+            }
+          : null;
 
-  function reservationStatus(): { text: string; tone: 'open' | 'closed' } | null {
-    if (trip.effectiveStatus === 'COMPLETED' || trip.effectiveStatus === 'CANCELLED') return null;
+      case 'open':
+        return trip.reservationEndDate
+          ? {
+              text: t('reservationOpen', {
+                date: format.dateTime(new Date(trip.reservationEndDate), 'long'),
+              }),
+              tone: 'open',
+            }
+          : null;
 
-    if (trip.reservationStartDate) {
-      const opens = new Date(trip.reservationStartDate);
-      if (opens.getTime() > Date.now()) {
-        return { text: t('reservationOpensOn', { date: format.dateTime(opens, 'long') }), tone: 'closed' };
-      }
+      case 'closed':
+        return { text: t('reservationClosed'), tone: 'closed' };
+
+      default:
+        return null;
     }
-
-    if (trip.reservationEndDate) {
-      const closes = new Date(trip.reservationEndDate);
-      return closes.getTime() >= Date.now()
-        ? { text: t('reservationOpen', { date: format.dateTime(closes, 'long') }), tone: 'open' }
-        : { text: t('reservationClosed'), tone: 'closed' };
-    }
-
-    return null;
-  }
+  })();
 
   return (
     <aside className="lg:sticky lg:top-24">

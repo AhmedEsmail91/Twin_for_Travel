@@ -67,11 +67,24 @@ export type Trip = {
   updatedAt: string;
 };
 
-/** A trip plus the values the UI derives rather than stores. */
+/**
+ * Where the trip sits in its reservation window.
+ * `none` means no window was configured, so there is nothing to announce.
+ */
+export type ReservationState = 'open' | 'not-yet-open' | 'closed' | 'none';
+
+/**
+ * A trip plus the values the UI derives rather than stores.
+ *
+ * These are computed in the service, not in components: they depend on the current
+ * time, and a component that reads the clock during render is impure — it can
+ * produce a different result on a re-render than it did on the server.
+ */
 export type TripWithDerived = Trip & {
   effectiveStatus: TripStatus;
   durationDays: number;
   reservationOpen: boolean;
+  reservationState: ReservationState;
   soldOut: boolean;
 };
 

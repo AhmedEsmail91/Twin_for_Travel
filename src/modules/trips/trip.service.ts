@@ -10,6 +10,7 @@ import type { TripDocument } from './trip.model';
 import * as repository from './trip.repository';
 import type { CreateTripInput, UpdateTripInput } from './trip.schema';
 import type {
+  ReservationState,
   Trip,
   TripListOptions,
   TripStatus,
@@ -48,35 +49,49 @@ export function deriveStatus(trip: Pick<Trip, 'status' | 'startDate' | 'endDate'
   return 'ONGOING';
 }
 
-function isReservationOpen(trip: Trip, effectiveStatus: TripStatus): boolean {
-  if (!trip.published) return false;
-  if (effectiveStatus === 'COMPLETED' || effectiveStatus === 'CANCELLED') return false;
-  if (trip.availableSeats <= 0) return false;
+/**
+ * Where "today" sits relative to the configured reservation window, in the
+ * company's timezone. Returns `none` when no window is set, so the UI knows to say
+ * nothing rather than to guess.
+ */
+function reservationState(trip: Trip, effectiveStatus: TripStatus): ReservationState {
+  if (effectiveStatus === 'COMPLETED' || effectiveStatus === 'CANCELLED') return 'none';
+  if (!trip.reservationStartDate && !trip.reservationEndDate) return 'none';
 
   const zone = env.SITE_TIMEZONE;
   const today = startOfDayInZone(new Date(), zone).getTime();
 
   if (trip.reservationStartDate) {
     const opens = startOfDayInZone(new Date(trip.reservationStartDate), zone).getTime();
-    if (today < opens) return false;
+    if (today < opens) return 'not-yet-open';
   }
 
   if (trip.reservationEndDate) {
     const closes = startOfDayInZone(new Date(trip.reservationEndDate), zone).getTime();
-    if (today > closes) return false;
+    if (today > closes) return 'closed';
   }
 
-  return true;
+  return 'open';
+}
+
+function isReservationOpen(trip: Trip, effectiveStatus: TripStatus, state: ReservationState): boolean {
+  if (!trip.published) return false;
+  if (effectiveStatus === 'COMPLETED' || effectiveStatus === 'CANCELLED') return false;
+  if (trip.availableSeats <= 0) return false;
+
+  return state === 'open' || state === 'none';
 }
 
 export function withDerived(trip: Trip): TripWithDerived {
   const effectiveStatus = deriveStatus(trip);
+  const state = reservationState(trip, effectiveStatus);
 
   return {
     ...trip,
     effectiveStatus,
     durationDays: durationInDays(new Date(trip.startDate), new Date(trip.endDate), env.SITE_TIMEZONE),
-    reservationOpen: isReservationOpen(trip, effectiveStatus),
+    reservationOpen: isReservationOpen(trip, effectiveStatus, state),
+    reservationState: state,
     soldOut: trip.availableSeats <= 0,
   };
 }
@@ -176,7 +191,9 @@ export async function updateTrip(id: string, input: UpdateTripInput): Promise<Tr
     input.coverImage !== undefined ? input.coverImage !== null : existing.coverImage !== null;
 
   if (willBePublished && !willHaveCover) {
-    throw new ValidationError('The submitted data is invalid', {
+    // A specific message, not the generic one: this is often hit from the trips
+    // table, where there is no field to attach an inline error to.
+    throw new ValidationError('Add a cover image before publishing this trip', {
       coverImage: ['Add a cover image before publishing this trip'],
     });
   }
