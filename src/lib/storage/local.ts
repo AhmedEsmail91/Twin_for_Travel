@@ -27,7 +27,12 @@ const EXTENSION_BY_TYPE: Record<string, string> = {
 export class LocalStorageProvider implements StorageProvider {
   readonly name = 'local';
 
-  private readonly rootDir = path.resolve(process.cwd(), env.UPLOAD_DIR);
+  /*
+   * `turbopackIgnore` stops the bundler tracing this dynamic path, which would
+   * otherwise pull the entire project (including `public/`) into the server output.
+   * The provider is development-only, so nothing is lost. See the class comment.
+   */
+  private readonly rootDir = path.resolve(/* turbopackIgnore: true */ process.cwd(), env.UPLOAD_DIR);
 
   /** URL path the files are served from, derived from the directory under `public/`. */
   private readonly publicPrefix = `/${env.UPLOAD_DIR.replace(/^public\/?/, '').replace(/^\/+|\/+$/g, '')}`;
