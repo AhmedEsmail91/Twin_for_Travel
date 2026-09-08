@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 
 import { Alert } from '@/components/ui/Alert';
@@ -17,6 +18,7 @@ import { loginSchema } from '@/modules/auth/auth.schema';
  */
 export function LoginForm({ nextPath }: { nextPath?: string }) {
   const router = useRouter();
+  const t = useTranslations('admin.login');
   const [pending, setPending] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -61,7 +63,7 @@ export function LoginForm({ nextPath }: { nextPath?: string }) {
           );
         }
       } else {
-        setFormError('Something went wrong. Please try again.');
+        setFormError(t('genericError'));
       }
       setPending(false);
     }
@@ -81,11 +83,11 @@ export function LoginForm({ nextPath }: { nextPath?: string }) {
       noValidate
       className="flex flex-col gap-4"
     >
-      <h2 className="text-h3 text-navy">Sign in</h2>
+      <h2 className="text-h3 text-navy">{t('heading')}</h2>
 
       {formError ? <Alert tone="danger">{formError}</Alert> : null}
 
-      <Field label="Email" required error={fieldErrors.email}>
+      <Field label={t('emailLabel')} required error={fieldErrors.email}>
         {(props) => (
           <Input
             {...props}
@@ -93,19 +95,26 @@ export function LoginForm({ nextPath }: { nextPath?: string }) {
             type="email"
             autoComplete="username"
             autoFocus
-            placeholder="you@example.com"
+            dir="ltr"
+            placeholder={t('emailPlaceholder')}
           />
         )}
       </Field>
 
-      <Field label="Password" required error={fieldErrors.password}>
+      <Field label={t('passwordLabel')} required error={fieldErrors.password}>
         {(props) => (
-          <Input {...props} name="password" type="password" autoComplete="current-password" />
+          <Input
+            {...props}
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            dir="ltr"
+          />
         )}
       </Field>
 
       <Button type="submit" disabled={pending} fullWidth className="mt-2">
-        {pending ? 'Signing in…' : 'Sign in'}
+        {pending ? t('signingIn') : t('signIn')}
       </Button>
     </form>
   );

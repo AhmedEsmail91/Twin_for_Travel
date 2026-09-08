@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
+import { getAdminLocale } from '@/i18n/admin-locale';
 import { getCurrentAdmin } from '@/modules/auth/auth.service';
 
 export const dynamic = 'force-dynamic';
@@ -18,9 +19,11 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
   const admin = await getCurrentAdmin();
   if (!admin) redirect('/admin/login');
 
+  const locale = await getAdminLocale();
+
   return (
     <div className="min-h-dvh lg:ps-64">
-      <AdminSidebar adminName={admin.name || admin.email} />
+      <AdminSidebar adminName={admin.name || admin.email} locale={locale} />
       <main className="min-w-0">{children}</main>
     </div>
   );

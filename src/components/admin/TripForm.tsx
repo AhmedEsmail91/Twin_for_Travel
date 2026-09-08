@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 
 import { BilingualField, BilingualListField } from './BilingualField';
@@ -89,6 +90,8 @@ function initialState(trip?: TripWithDerived): TripFormState {
  */
 export function TripForm({ trip }: { trip?: TripWithDerived }) {
   const router = useRouter();
+  const t = useTranslations('admin.tripForm');
+  const tStatus = useTranslations('admin.trips.status');
   const isEdit = Boolean(trip);
 
   const [state, setState] = useState<TripFormState>(() => initialState(trip));
@@ -149,7 +152,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
 
       if (isEdit) {
         setState(initialState(saved));
-        setSuccess('Changes saved.');
+        setSuccess(t('savedNotice'));
         router.refresh();
       } else {
         router.push(`/admin/trips/${saved.id}/edit`);
@@ -167,7 +170,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
           );
         }
       } else {
-        setFormError('Could not save the trip. Please try again.');
+        setFormError(t('genericError'));
       }
     } finally {
       setPending(false);
@@ -178,27 +181,31 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
 
   return (
     <form method="post" onSubmit={onSubmit} noValidate className="flex flex-col gap-8 pb-24">
-      {formError ? <Alert tone="danger" title="The trip was not saved">{formError}</Alert> : null}
+      {formError ? (
+        <Alert tone="danger" title={t('errorTitle')}>
+          {formError}
+        </Alert>
+      ) : null}
       {success ? <Alert tone="success">{success}</Alert> : null}
 
-      <FormSection title="Content" description="Both languages are shown to visitors; each field falls back to the other language when one is empty.">
+      <FormSection title={t('sections.content.title')} description={t('sections.content.description')}>
         <BilingualField
-          label="Title"
+          label={t('fields.title')}
           required
           value={state.title}
           onChange={(value) => set('title', value)}
           error={fieldErrors.title}
-          placeholder={{ ar: 'رحلة الإسكندرية', en: 'Alexandria Day Trip' }}
+          placeholder={{ ar: t('fields.titlePlaceholderAr'), en: t('fields.titlePlaceholderEn') }}
         />
 
         <Field
-          label="URL slug"
+          label={t('fields.slug')}
           hint={
             state.slug
-              ? `The trip will live at /ar/trips/${state.slug} and /en/trips/${state.slug}`
+              ? t('fields.slugHintWithValue', { slug: state.slug })
               : suggestedSlug
-                ? `Leave blank to generate "${suggestedSlug}" from the title.`
-                : 'Leave blank to generate one from the title.'
+                ? t('fields.slugHintSuggested', { slug: suggestedSlug })
+                : t('fields.slugHintEmpty')
           }
           error={fieldErrors.slug}
         >
@@ -207,51 +214,54 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
               {...props}
               value={state.slug}
               onChange={(event) => set('slug', event.target.value)}
-              placeholder={suggestedSlug || 'alexandria-day-trip'}
+              placeholder={suggestedSlug || t('fields.slugPlaceholder')}
               dir="ltr"
             />
           )}
         </Field>
 
         <BilingualField
-          label="Destination"
+          label={t('fields.destination')}
           required
           value={state.destination}
           onChange={(value) => set('destination', value)}
           error={fieldErrors.destination}
-          placeholder={{ ar: 'الإسكندرية', en: 'Alexandria' }}
+          placeholder={{
+            ar: t('fields.destinationPlaceholderAr'),
+            en: t('fields.destinationPlaceholderEn'),
+          }}
         />
 
         <BilingualField
-          label="Location details"
+          label={t('fields.location')}
           value={state.location}
           onChange={(value) => set('location', value)}
-          hint="The specific sites visited, shown beside the destination."
+          hint={t('fields.locationHint')}
           error={fieldErrors.location}
         />
 
         <BilingualField
-          label="Short description"
+          label={t('fields.shortDescription')}
           multiline
           rows={3}
           value={state.shortDescription}
           onChange={(value) => set('shortDescription', value)}
-          hint="One or two sentences. Used on trip cards and in search results."
+          hint={t('fields.shortDescriptionHint')}
           error={fieldErrors.shortDescription}
         />
 
         <BilingualField
-          label="Full description"
+          label={t('fields.fullDescription')}
           multiline
           rows={8}
           value={state.description}
           onChange={(value) => set('description', value)}
-          hint="Blank lines separate paragraphs."
+          hint={t('fields.fullDescriptionHint')}
           error={fieldErrors.description}
         />
       </FormSection>
 
-      <FormSection title="Images">
+      <FormSection title={t('sections.images.title')}>
         <ImageManager
           cover={state.coverImage}
           gallery={state.gallery}
@@ -261,9 +271,9 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
         />
       </FormSection>
 
-      <FormSection title="Schedule & pricing">
+      <FormSection title={t('sections.schedule.title')}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Departure date" required error={fieldErrors.startDate}>
+          <Field label={t('fields.departureDate')} required error={fieldErrors.startDate}>
             {(props) => (
               <Input
                 {...props}
@@ -274,7 +284,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
             )}
           </Field>
 
-          <Field label="Return date" required error={fieldErrors.endDate}>
+          <Field label={t('fields.returnDate')} required error={fieldErrors.endDate}>
             {(props) => (
               <Input
                 {...props}
@@ -286,8 +296,8 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
           </Field>
 
           <Field
-            label="Reservations open"
-            hint="Optional. Leave blank to accept reservations immediately."
+            label={t('fields.reservationsOpen')}
+            hint={t('fields.reservationsOpenHint')}
             error={fieldErrors.reservationStartDate}
           >
             {(props) => (
@@ -301,8 +311,8 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
           </Field>
 
           <Field
-            label="Reservations close"
-            hint="Optional. Leave blank to keep them open until departure."
+            label={t('fields.reservationsClose')}
+            hint={t('fields.reservationsCloseHint')}
             error={fieldErrors.reservationEndDate}
           >
             {(props) => (
@@ -315,7 +325,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
             )}
           </Field>
 
-          <Field label="Price" required error={fieldErrors.price}>
+          <Field label={t('fields.price')} required error={fieldErrors.price}>
             {(props) => (
               <Input
                 {...props}
@@ -329,7 +339,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
             )}
           </Field>
 
-          <Field label="Currency" error={fieldErrors.currency}>
+          <Field label={t('fields.currency')} error={fieldErrors.currency}>
             {(props) => (
               <Select
                 {...props}
@@ -345,7 +355,12 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
             )}
           </Field>
 
-          <Field label="Capacity" required hint="Total seats on this trip." error={fieldErrors.capacity}>
+          <Field
+            label={t('fields.capacity')}
+            required
+            hint={t('fields.capacityHint')}
+            error={fieldErrors.capacity}
+          >
             {(props) => (
               <Input
                 {...props}
@@ -360,9 +375,9 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
           </Field>
 
           <Field
-            label="Available seats"
+            label={t('fields.availableSeats')}
             required
-            hint="Seats still open. Cannot exceed the capacity."
+            hint={t('fields.availableSeatsHint')}
             error={fieldErrors.availableSeats}
           >
             {(props) => (
@@ -380,34 +395,37 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
         </div>
       </FormSection>
 
-      <FormSection title="What the trip includes">
+      <FormSection title={t('sections.includes.title')}>
         <BilingualListField
-          label="Activities & entertainment"
+          label={t('fields.activities')}
           value={state.entertainment}
           onChange={(value) => set('entertainment', value)}
-          placeholder={{ ar: 'جولة داخل القلعة', en: 'Tour inside the Citadel' }}
+          placeholder={{
+            ar: t('fields.activitiesPlaceholderAr'),
+            en: t('fields.activitiesPlaceholderEn'),
+          }}
         />
 
         <BilingualListField
-          label="Included in the price"
+          label={t('fields.included')}
           value={state.includedServices}
           onChange={(value) => set('includedServices', value)}
         />
 
         <BilingualListField
-          label="Not included"
+          label={t('fields.excluded')}
           value={state.excludedServices}
           onChange={(value) => set('excludedServices', value)}
         />
 
         <BilingualListField
-          label="Important notes"
+          label={t('fields.notes')}
           value={state.importantNotes}
           onChange={(value) => set('importantNotes', value)}
         />
 
         <BilingualField
-          label="Transport"
+          label={t('fields.transport')}
           multiline
           rows={3}
           value={state.transportation}
@@ -415,7 +433,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
         />
 
         <BilingualField
-          label="Meeting point"
+          label={t('fields.meetingPoint')}
           multiline
           rows={3}
           value={state.meetingPoint}
@@ -423,21 +441,21 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
         />
 
         <BilingualField
-          label="Reservation information"
+          label={t('fields.reservationInfo')}
           multiline
           rows={4}
           value={state.reservationInformation}
           onChange={(value) => set('reservationInformation', value)}
-          hint="How to reserve, deposits, and any conditions."
+          hint={t('fields.reservationInfoHint')}
         />
       </FormSection>
 
       <FormSection
-        title="Visibility"
-        description="Upcoming, ongoing and completed follow the trip's dates automatically. Choose Draft or Cancelled only to override that."
+        title={t('sections.visibility.title')}
+        description={t('sections.visibility.description')}
       >
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Status" error={fieldErrors.status}>
+          <Field label={t('fields.status')} error={fieldErrors.status}>
             {(props) => (
               <Select
                 {...props}
@@ -446,7 +464,7 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
               >
                 {TRIP_STATUSES.map((status) => (
                   <option key={status} value={status}>
-                    {status}
+                    {tStatus(status)}
                   </option>
                 ))}
               </Select>
@@ -454,8 +472,8 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
           </Field>
 
           <Field
-            label="Display order"
-            hint="Lower numbers appear first among featured trips."
+            label={t('fields.displayOrder')}
+            hint={t('fields.displayOrderHint')}
             error={fieldErrors.displayOrder}
           >
             {(props) => (
@@ -474,15 +492,15 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
 
         <div className="grid gap-3 sm:grid-cols-2">
           <Checkbox
-            label="Published"
-            description="Visible on the public site. Requires a cover image."
+            label={t('fields.published')}
+            description={t('fields.publishedHint')}
             checked={state.published}
             onChange={(event) => set('published', event.target.checked)}
           />
 
           <Checkbox
-            label="Featured"
-            description="Promoted on the homepage."
+            label={t('fields.featured')}
+            description={t('fields.featuredHint')}
             checked={state.featured}
             onChange={(event) => set('featured', event.target.checked)}
           />
@@ -493,17 +511,17 @@ export function TripForm({ trip }: { trip?: TripWithDerived }) {
       <div className="fixed inset-x-0 bottom-0 z-60 border-t border-sand bg-surface/95 backdrop-blur-sm lg:ps-64">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
           <p className="min-w-0 truncate text-caption text-ink-soft">
-            {isEdit ? `Editing /${trip!.slug}` : 'New trip'}
+            {isEdit ? t('editingLabel', { slug: trip!.slug }) : t('newTripLabel')}
           </p>
 
           <div className="flex shrink-0 gap-2">
             <Button as="a" href="/admin/trips" variant="ghost" size="sm">
-              Cancel
+              {t('cancel')}
             </Button>
 
             <Button type="submit" size="sm" disabled={pending}>
               <Icon name="check" size={16} />
-              {pending ? 'Saving…' : isEdit ? 'Save changes' : 'Create trip'}
+              {pending ? t('saving') : isEdit ? t('saveChanges') : t('createTrip')}
             </Button>
           </div>
         </div>

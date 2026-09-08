@@ -2,27 +2,31 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { AdminLanguageSwitcher } from './AdminLanguageSwitcher';
 import { Icon, type IconName } from '@/components/ui/Icon';
 import { Logo } from '@/components/ui/Logo';
 import { SITE } from '@/config/site';
+import type { Locale } from '@/i18n/routing';
 import { cn } from '@/lib/utils/cn';
-
-const ADMIN_NAV: { href: string; label: string; icon: IconName }[] = [
-  { href: '/admin', label: 'Overview', icon: 'globe' },
-  { href: '/admin/trips', label: 'Trips', icon: 'plane' },
-  { href: '/admin/social', label: 'Social links', icon: 'sparkles' },
-  { href: '/admin/settings', label: 'Settings', icon: 'shield' },
-];
 
 /**
  * Navy sidebar, gold active state (CLAUDE.md §45). Collapses to a slide-in drawer
  * below `lg`, driven by the header's menu button through a shared `open` state.
  */
-export function AdminSidebar({ adminName }: { adminName: string }) {
+export function AdminSidebar({ adminName, locale }: { adminName: string; locale: Locale }) {
   const pathname = usePathname();
+  const t = useTranslations('admin.sidebar');
   const [open, setOpen] = useState(false);
+
+  const ADMIN_NAV: { href: string; label: string; icon: IconName }[] = [
+    { href: '/admin', label: t('overview'), icon: 'globe' },
+    { href: '/admin/trips', label: t('trips'), icon: 'plane' },
+    { href: '/admin/social', label: t('socialLinks'), icon: 'sparkles' },
+    { href: '/admin/settings', label: t('settings'), icon: 'shield' },
+  ];
 
   const items = ADMIN_NAV.map((item) => ({
     ...item,
@@ -34,7 +38,7 @@ export function AdminSidebar({ adminName }: { adminName: string }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Open navigation"
+        aria-label={t('openNavigation')}
         aria-expanded={open}
         className="fixed top-3 z-70 rounded-md border border-navy-light bg-navy p-2.5 text-cream shadow-card start-3 lg:hidden"
       >
@@ -44,7 +48,7 @@ export function AdminSidebar({ adminName }: { adminName: string }) {
       {open ? (
         <button
           type="button"
-          aria-label="Close navigation"
+          aria-label={t('closeNavigation')}
           onClick={() => setOpen(false)}
           className="fixed inset-0 z-70 cursor-default bg-navy-dark/60 lg:hidden"
         />
@@ -62,21 +66,23 @@ export function AdminSidebar({ adminName }: { adminName: string }) {
             <Logo companyName={SITE.name} size={36} />
             <span className="min-w-0">
               <span className="block truncate text-body-sm font-bold text-cream">{SITE.name}</span>
-              <span className="u-label block text-[0.6rem] text-gold-light/70">Dashboard</span>
+              <span className="u-label block text-[0.6rem] text-gold-light/70">
+                {t('brandLabel')}
+              </span>
             </span>
           </Link>
 
           <button
             type="button"
             onClick={() => setOpen(false)}
-            aria-label="Close navigation"
+            aria-label={t('closeNavigation')}
             className="rounded-md p-1.5 text-cream/70 hover:bg-cream/10 hover:text-cream lg:hidden"
           >
             <Icon name="close" size={18} />
           </button>
         </div>
 
-        <nav aria-label="Dashboard" className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
+        <nav aria-label={t('navLabel')} className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
           {items.map((item) => (
             <Link
               key={item.href}
@@ -97,7 +103,10 @@ export function AdminSidebar({ adminName }: { adminName: string }) {
         </nav>
 
         <div className="border-t border-navy-light p-3">
-          <p className="px-3 pb-2 text-caption text-cream/50">Signed in as</p>
+          <div className="px-3 pb-3">
+            <AdminLanguageSwitcher locale={locale} />
+          </div>
+          <p className="px-3 pb-2 text-caption text-cream/50">{t('signedInAs')}</p>
           <p className="truncate px-3 pb-3 text-body-sm font-semibold text-cream">{adminName}</p>
           <SignOutButton />
         </div>
@@ -108,6 +117,7 @@ export function AdminSidebar({ adminName }: { adminName: string }) {
 
 function SignOutButton() {
   const router = useRouter();
+  const t = useTranslations('admin.sidebar');
   const [pending, setPending] = useState(false);
 
   return (
@@ -130,8 +140,8 @@ function SignOutButton() {
       }}
       className="flex w-full items-center gap-2.5 rounded-md border border-cream/20 px-3 py-2.5 text-body-sm font-semibold text-cream/80 transition-colors duration-150 hover:border-danger hover:bg-danger/15 hover:text-cream disabled:opacity-60"
     >
-      <Icon name="arrow" size={17} />
-      {pending ? 'Signing out…' : 'Sign out'}
+      <Icon name="arrow" size={17} className="rtl:-scale-x-100" />
+      {pending ? t('signingOut') : t('signOut')}
     </button>
   );
 }

@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 import { AdminPage } from '@/components/admin/AdminPage';
 import { TripForm } from '@/components/admin/TripForm';
 import { Icon } from '@/components/ui/Icon';
+import { getAdminLocale } from '@/i18n/admin-locale';
 import { AppError } from '@/lib/http/errors';
 import { requireAdmin } from '@/modules/auth/auth.service';
 import { getTripByIdOrThrow } from '@/modules/trips/trip.service';
@@ -27,6 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function EditTripPage({ params }: PageProps) {
   await requireAdmin();
   const { id } = await params;
+  const locale = await getAdminLocale();
+  const t = await getTranslations({ locale, namespace: 'admin.tripForm' });
 
   let trip;
   try {
@@ -40,7 +44,9 @@ export default async function EditTripPage({ params }: PageProps) {
   return (
     <AdminPage
       title={trip.title.en || trip.title.ar}
-      description={`Last updated ${new Date(trip.updatedAt).toISOString().slice(0, 10)}`}
+      description={t('lastUpdated', {
+        date: new Date(trip.updatedAt).toISOString().slice(0, 10),
+      })}
       action={
         trip.published ? (
           <Link
@@ -50,7 +56,7 @@ export default async function EditTripPage({ params }: PageProps) {
             className="inline-flex items-center gap-2 rounded-md border border-sand px-4 py-2.5 text-body-sm font-semibold text-navy transition-colors duration-150 hover:border-gold hover:bg-gold/8"
           >
             <Icon name="globe" size={17} />
-            View on site
+            {t('viewOnSite')}
           </Link>
         ) : null
       }

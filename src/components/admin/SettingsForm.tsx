@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 
 import { BilingualField } from './BilingualField';
@@ -21,6 +22,7 @@ import type { SiteSettings } from '@/modules/settings/settings.types';
  */
 export function SettingsForm({ settings }: { settings: SiteSettings }) {
   const router = useRouter();
+  const t = useTranslations('admin.settings');
 
   const [state, setState] = useState(settings);
   const [pending, setPending] = useState(false);
@@ -55,7 +57,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
       });
 
       setState(saved);
-      setSuccess('Settings saved. They are live on the site now.');
+      setSuccess(t('savedNotice'));
       router.refresh();
     } catch (caught) {
       if (caught instanceof ApiClientError) {
@@ -68,7 +70,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
           );
         }
       } else {
-        setError('Could not save the settings. Please try again.');
+        setError(t('genericError'));
       }
     } finally {
       setPending(false);
@@ -80,40 +82,37 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
       {error ? <Alert tone="danger">{error}</Alert> : null}
       {success ? <Alert tone="success">{success}</Alert> : null}
 
-      <Section title="Company">
+      <Section title={t('sections.company.title')}>
         <BilingualField
-          label="Company name"
+          label={t('fields.companyName')}
           value={state.companyName}
           onChange={(value) => set('companyName', value)}
           error={fieldErrors.companyName}
         />
 
         <BilingualField
-          label="Tagline"
+          label={t('fields.tagline')}
           value={state.tagline}
           onChange={(value) => set('tagline', value)}
-          hint="Shown under the logo in the header and above the hero headline."
+          hint={t('fields.taglineHint')}
           error={fieldErrors.tagline}
         />
 
         <BilingualField
-          label="About the company"
+          label={t('fields.about')}
           multiline
           rows={6}
           value={state.about}
           onChange={(value) => set('about', value)}
-          hint="Used in the footer and as the story on the About page."
+          hint={t('fields.aboutHint')}
           error={fieldErrors.about}
         />
       </Section>
 
-      <Section
-        title="WhatsApp"
-        description="The number behind the floating button and every reservation call to action."
-      >
+      <Section title={t('sections.whatsapp.title')} description={t('sections.whatsapp.description')}>
         <Field
-          label="WhatsApp number"
-          hint="Include the country code, e.g. +20 101 275 2911. Leave blank to hide the button entirely."
+          label={t('fields.whatsappNumber')}
+          hint={t('fields.whatsappNumberHint')}
           error={fieldErrors.whatsappNumber}
         >
           {(props) => (
@@ -129,19 +128,19 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </Field>
 
         <BilingualField
-          label="Pre-filled message"
+          label={t('fields.whatsappMessage')}
           multiline
           rows={2}
           value={state.whatsappMessage}
           onChange={(value) => set('whatsappMessage', value)}
-          hint="What the visitor's chat opens with. Trip pages append the trip name automatically."
+          hint={t('fields.whatsappMessageHint')}
           error={fieldErrors.whatsappMessage}
         />
       </Section>
 
-      <Section title="Contact details">
+      <Section title={t('sections.contact.title')}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Phone" error={fieldErrors.contactPhone}>
+          <Field label={t('fields.phone')} error={fieldErrors.contactPhone}>
             {(props) => (
               <Input
                 {...props}
@@ -153,7 +152,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
             )}
           </Field>
 
-          <Field label="Email" error={fieldErrors.contactEmail}>
+          <Field label={t('fields.email')} error={fieldErrors.contactEmail}>
             {(props) => (
               <Input
                 {...props}
@@ -167,24 +166,20 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
 
         <BilingualField
-          label="Address"
+          label={t('fields.address')}
           value={state.address}
           onChange={(value) => set('address', value)}
           error={fieldErrors.address}
         />
 
         <BilingualField
-          label="Opening hours"
+          label={t('fields.workingHours')}
           value={state.workingHours}
           onChange={(value) => set('workingHours', value)}
           error={fieldErrors.workingHours}
         />
 
-        <Field
-          label="Map link"
-          hint="Optional. A Google Maps URL; the address links to it on the contact page."
-          error={fieldErrors.mapUrl}
-        >
+        <Field label={t('fields.mapUrl')} hint={t('fields.mapUrlHint')} error={fieldErrors.mapUrl}>
           {(props) => (
             <Input
               {...props}
@@ -197,19 +192,16 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </Field>
       </Section>
 
-      <Section
-        title="Search engine listing"
-        description="Optional overrides for the homepage title and description. Leave blank to use the built-in copy."
-      >
+      <Section title={t('sections.seo.title')} description={t('sections.seo.description')}>
         <BilingualField
-          label="Meta title"
+          label={t('fields.seoTitle')}
           value={state.seoTitle}
           onChange={(value) => set('seoTitle', value)}
           error={fieldErrors.seoTitle}
         />
 
         <BilingualField
-          label="Meta description"
+          label={t('fields.seoDescription')}
           multiline
           rows={3}
           value={state.seoDescription}
@@ -222,7 +214,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         <div className="mx-auto flex max-w-6xl items-center justify-end gap-3 px-5 py-3 sm:px-8">
           <Button type="submit" size="sm" disabled={pending}>
             <Icon name="check" size={16} />
-            {pending ? 'Saving…' : 'Save settings'}
+            {pending ? t('saving') : t('save')}
           </Button>
         </div>
       </div>

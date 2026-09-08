@@ -60,7 +60,7 @@ HTTP API.
 src/
 ├── app/
 │   ├── [locale]/            public site (ar | en), locale layout sets lang + dir
-│   ├── admin/               dashboard, locale-independent, English UI
+│   ├── admin/               dashboard, no URL locale segment, bilingual UI via a cookie toggle
 │   ├── api/                 route handlers: auth, trips, social, settings, uploads
 │   ├── globals.css          design tokens + base layer
 │   └── layout.tsx           root shell
@@ -83,7 +83,7 @@ src/
 │   ├── storage/             StorageProvider interface + providers
 │   ├── security/            csrf origin check, rate limiter
 │   └── utils/               slug, dates, cn, formatting
-├── i18n/                    routing, request config, navigation helpers
+├── i18n/                    routing, request config, navigation helpers, admin locale cookie
 ├── messages/                ar.json, en.json
 ├── types/                   shared cross-module types
 ├── config/                  env validation, site constants, navigation
@@ -169,8 +169,17 @@ same-origin check on mutating methods, catches `AppError`s, and normalises unkno
   transliterated from Arabic when English is absent) and is editable by the admin. Rationale:
   one canonical URL per trip, no locale-pair slug table, no ambiguity when a language is later
   edited. Documented as an assumption in §23.
-- The admin dashboard UI is English-only (it is an internal tool); the *content* it edits is
-  bilingual.
+- The admin dashboard UI is bilingual (ar/en), same as the site content it edits. It is **not**
+  locale-prefixed: `/admin` has no URL locale segment. Staff toggle the dashboard's language from
+  a cookie (`tft_admin_locale`, scoped to `/admin`, set via a Server Action in
+  `src/i18n/admin-locale.actions.ts`) rather than navigating to `/ar/admin` or `/en/admin`.
+  `getAdminLocale()` (`src/i18n/admin-locale.ts`) reads that cookie server-side, defaulting to
+  `en` when unset — the dashboard was English-only before this toggle existed, so an absent
+  cookie must not silently flip existing sessions to Arabic. `src/app/admin/layout.tsx` sets
+  `lang`/`dir` from it and wraps the tree in `NextIntlClientProvider` with an explicit `locale`
+  and the `admin` message namespace (`messages/{ar,en}.json` → `admin`), since there is no
+  `[locale]` route segment for `next-intl`'s routing integration to key off. Admin RTL follows the
+  same logical-property rules as the public site (§11).
 
 ## 11. RTL / LTR rules
 

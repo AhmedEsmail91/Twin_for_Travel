@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useId, useState } from 'react';
 
 import { Input, Textarea } from '@/components/ui/Input';
@@ -43,6 +44,7 @@ export function BilingualField({
   placeholder?: { ar?: string; en?: string };
 }) {
   const id = useId();
+  const t = useTranslations('admin.bilingualField');
   const [active, setActive] = useState<Language>('ar');
   const errorId = error ? `${id}-error` : undefined;
   const hintId = hint ? `${id}-hint` : undefined;
@@ -61,7 +63,7 @@ export function BilingualField({
           ) : null}
         </span>
 
-        <div role="tablist" aria-label={`${label} language`} className="flex gap-1">
+        <div role="tablist" aria-label={t('languageTabLabel', { label })} className="flex gap-1">
           {LANGUAGES.map((language) => {
             const isActive = language.code === active;
             const filled = value[language.code]?.trim().length > 0;
@@ -151,6 +153,8 @@ export function BilingualListField({
   hint?: string;
   placeholder?: { ar?: string; en?: string };
 }) {
+  const t = useTranslations('admin.bilingualField');
+
   const asText: Localized = {
     ar: value.ar.join('\n'),
     en: value.en.join('\n'),
@@ -162,7 +166,7 @@ export function BilingualListField({
       value={asText}
       multiline
       rows={5}
-      hint={hint ?? 'One item per line.'}
+      hint={hint ?? t('oneItemPerLine')}
       placeholder={placeholder}
       onChange={(next) =>
         onChange({

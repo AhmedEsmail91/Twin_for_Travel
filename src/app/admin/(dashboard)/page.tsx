@@ -1,9 +1,11 @@
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 import { AdminPage } from '@/components/admin/AdminPage';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Icon, type IconName } from '@/components/ui/Icon';
+import { getAdminLocale } from '@/i18n/admin-locale';
 import { requireAdmin } from '@/modules/auth/auth.service';
 import { getTripCounts, listUpcomingTrips } from '@/modules/trips/trip.service';
 
@@ -13,66 +15,78 @@ export const dynamic = 'force-dynamic';
  * Summary cards only where the number means something operationally. No invented
  * analytics to fill space (CLAUDE.md / brief §24).
  */
-const CARDS: { key: string; label: string; icon: IconName; hint: string }[] = [
-  { key: 'total', label: 'Total trips', icon: 'plane', hint: 'Every trip in the database' },
-  { key: 'UPCOMING', label: 'Upcoming', icon: 'calendar', hint: 'Announced and still to run' },
-  { key: 'COMPLETED', label: 'Completed', icon: 'check', hint: 'Finished and archived' },
-  { key: 'DRAFT', label: 'Drafts', icon: 'image', hint: 'Not visible to visitors' },
-  { key: 'featured', label: 'Featured', icon: 'star', hint: 'Promoted on the homepage' },
-  { key: 'published', label: 'Published', icon: 'globe', hint: 'Live on the public site' },
+const CARD_KEYS: { countKey: string; messageKey: string; icon: IconName }[] = [
+  { countKey: 'total', messageKey: 'total', icon: 'plane' },
+  { countKey: 'UPCOMING', messageKey: 'upcoming', icon: 'calendar' },
+  { countKey: 'COMPLETED', messageKey: 'completed', icon: 'check' },
+  { countKey: 'DRAFT', messageKey: 'draft', icon: 'image' },
+  { countKey: 'featured', messageKey: 'featured', icon: 'star' },
+  { countKey: 'published', messageKey: 'published', icon: 'globe' },
 ];
 
 export default async function AdminOverviewPage() {
   const admin = await requireAdmin();
-  const [counts, upcoming] = await Promise.all([getTripCounts(), listUpcomingTrips(5)]);
+  const locale = await getAdminLocale();
+  const [t, counts, upcoming] = await Promise.all([
+    getTranslations({ locale, namespace: 'admin.overview' }),
+    getTripCounts(),
+    listUpcomingTrips(5),
+  ]);
 
   return (
     <AdminPage
-      title={`Welcome back, ${(admin.name || admin.email).split(' ')[0]}`}
-      description="A snapshot of the trips on the public site."
+      title={t('welcomeBack', { name: (admin.name || admin.email).split(' ')[0] ?? '' })}
+      description={t('snapshot')}
       action={
         <Button as={Link} href="/admin/trips/create" variant="primary">
           <Icon name="plus" size={17} />
-          New trip
+          {t('newTrip')}
         </Button>
       }
     >
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {CARDS.map((card) => (
-          <li key={card.key} className="rounded-lg border border-sand bg-surface p-5 shadow-hairline">
+        {CARD_KEYS.map((card) => (
+          <li
+            key={card.countKey}
+            className="rounded-lg border border-sand bg-surface p-5 shadow-hairline"
+          >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-caption font-semibold text-ink-soft">{card.label}</p>
-                <p className="u-numeric mt-1 text-h2 font-bold text-navy">{counts[card.key] ?? 0}</p>
+                <p className="text-caption font-semibold text-ink-soft">
+                  {t(`cards.${card.messageKey}.label`)}
+                </p>
+                <p className="u-numeric mt-1 text-h2 font-bold text-navy">
+                  {counts[card.countKey] ?? 0}
+                </p>
               </div>
               <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-gold/10 text-gold-dark">
                 <Icon name={card.icon} size={19} />
               </span>
             </div>
-            <p className="mt-3 text-caption text-ink-soft">{card.hint}</p>
+            <p className="mt-3 text-caption text-ink-soft">{t(`cards.${card.messageKey}.hint`)}</p>
           </li>
         ))}
       </ul>
 
       <section className="mt-10">
         <div className="mb-4 flex items-end justify-between gap-4">
-          <h2 className="text-h3 font-bold text-navy">Next departures</h2>
+          <h2 className="text-h3 font-bold text-navy">{t('nextDepartures')}</h2>
           <Link
             href="/admin/trips"
             className="text-caption font-semibold text-gold-dark hover:underline"
           >
-            All trips
+            {t('allTrips')}
           </Link>
         </div>
 
         {upcoming.length === 0 ? (
           <EmptyState
             icon="calendar"
-            title="No upcoming trips"
-            body="Create a trip and publish it to see it here and on the public site."
+            title={t('empty.title')}
+            body={t('empty.body')}
             action={
               <Button as={Link} href="/admin/trips/create" variant="outline">
-                Create a trip
+                {t('empty.action')}
               </Button>
             }
           />
@@ -90,10 +104,10 @@ export default async function AdminOverviewPage() {
                     </span>
                     <span className="u-numeric block text-caption text-ink-soft">
                       {new Date(trip.startDate).toISOString().slice(0, 10)} ·{' '}
-                      {trip.availableSeats}/{trip.capacity} seats
+                      {trip.availableSeats}/{trip.capacity} {t('seats')}
                     </span>
                   </span>
-                  <Icon name="arrow" size={17} className="shrink-0 text-sand-muted" />
+                  <Icon name="arrow" size={17} className="shrink-0 text-sand-muted rtl:-scale-x-100" />
                 </Link>
               </li>
             ))}
