@@ -252,5 +252,300 @@
     },
     "about": { "title": "من نحن", "description": "تعرّف على شركة توين للسياحة وطريقتنا في تنظيم الرحلات." },
     "contact": { "title": "تواصل معنا", "description": "تواصل معنا عبر واتساب أو الهاتف أو البريد الإلكتروني للحجز والاستفسار." }
+  },
+  "admin": {
+    "language": { "label": "اللغة", "ar": "العربية", "en": "English" },
+    "login": {
+      "dashboardLabel": "لوحة التحكم",
+      "authorisedOnly": "لأعضاء الفريق المصرّح لهم فقط.",
+      "heading": "تسجيل الدخول",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "كلمة المرور",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جارٍ تسجيل الدخول…",
+      "genericError": "حدث خطأ ما. حاول مرة أخرى."
+    },
+    "sidebar": {
+      "brandLabel": "لوحة التحكم",
+      "openNavigation": "فتح القائمة",
+      "closeNavigation": "إغلاق القائمة",
+      "navLabel": "لوحة التحكم",
+      "overview": "نظرة عامة",
+      "trips": "الرحلات",
+      "socialLinks": "روابط التواصل الاجتماعي",
+      "settings": "الإعدادات",
+      "signedInAs": "تم تسجيل الدخول باسم",
+      "signOut": "تسجيل الخروج",
+      "signingOut": "جارٍ تسجيل الخروج…"
+    },
+    "overview": {
+      "welcomeBack": "أهلاً بعودتك، {name}",
+      "snapshot": "لمحة عامة عن الرحلات المنشورة على الموقع.",
+      "newTrip": "رحلة جديدة",
+      "cards": {
+        "total": { "label": "إجمالي الرحلات", "hint": "كل الرحلات في قاعدة البيانات" },
+        "upcoming": { "label": "القادمة", "hint": "معلنة ولم تُقام بعد" },
+        "completed": { "label": "المكتملة", "hint": "انتهت وأُرشفت" },
+        "draft": { "label": "المسودّات", "hint": "غير ظاهرة للزوّار" },
+        "featured": { "label": "المميّزة", "hint": "مُبرزة على الصفحة الرئيسية" },
+        "published": { "label": "المنشورة", "hint": "مباشرة على الموقع" }
+      },
+      "nextDepartures": "المواعيد القادمة",
+      "allTrips": "كل الرحلات",
+      "seats": "مقعد",
+      "empty": {
+        "title": "لا توجد رحلات قادمة",
+        "body": "أنشئ رحلة وانشرها لتظهر هنا وعلى الموقع العام.",
+        "action": "إنشاء رحلة"
+      }
+    },
+    "trips": {
+      "title": "الرحلات",
+      "description": "إنشاء الرحلات المعروضة على الموقع وتعديلها ونشرها وأرشفتها.",
+      "newTrip": "رحلة جديدة",
+      "searchLabel": "البحث في الرحلات",
+      "searchPlaceholder": "ابحث بالعنوان أو الوجهة أو الرابط المختصر",
+      "statusLabel": "تصفية حسب الحالة",
+      "statusAll": "كل الحالات",
+      "status": {
+        "DRAFT": "مسودة",
+        "UPCOMING": "قادمة",
+        "ONGOING": "جارية",
+        "COMPLETED": "مكتملة",
+        "CANCELLED": "ملغاة"
+      },
+      "visibilityLabel": "تصفية حسب الظهور",
+      "visibilityAll": "كل الرحلات",
+      "visibilityPublished": "المنشورة فقط",
+      "visibilityUnpublished": "غير المنشورة فقط",
+      "visibilityFeatured": "المميّزة فقط",
+      "table": {
+        "caption": "الرحلات، {shown} من {total} معروضة",
+        "trip": "الرحلة",
+        "status": "الحالة",
+        "departure": "موعد المغادرة",
+        "price": "السعر",
+        "seats": "المقاعد",
+        "visibility": "الظهور",
+        "actions": "إجراءات"
+      },
+      "published": "منشورة",
+      "draft": "مسودة",
+      "featured": "مميّزة",
+      "notFeatured": "غير مميّزة",
+      "editAction": "تعديل {title}",
+      "deleteAction": "حذف {title}",
+      "empty": {
+        "noTripsTitle": "لا توجد رحلات بعد",
+        "noTripsBody": "أنشئ أول رحلة لنشرها على الموقع.",
+        "noMatchTitle": "لا توجد رحلات مطابقة لهذه الفلاتر",
+        "noMatchBody": "جرّب كلمة بحث مختلفة أو امسح الفلاتر.",
+        "createTrip": "إنشاء رحلة",
+        "clearFilters": "مسح الفلاتر"
+      },
+      "deleteDialog": {
+        "title": "حذف هذه الرحلة؟",
+        "description": "سيتم حذف \"{title}\" نهائيًا مع كل صور معرضها. لا يمكن التراجع عن هذا الإجراء."
+      },
+      "notice": {
+        "published": "أصبحت \"{title}\" منشورة الآن.",
+        "unpublished": "أصبحت \"{title}\" غير منشورة الآن.",
+        "featured": "أصبحت \"{title}\" مميّزة الآن.",
+        "unfeatured": "لم تعد \"{title}\" مميّزة.",
+        "deleted": "تم حذف \"{title}\"."
+      },
+      "errors": {
+        "update": "تعذّر تحديث الرحلة. حاول مرة أخرى.",
+        "delete": "تعذّر حذف الرحلة."
+      }
+    },
+    "tripForm": {
+      "metaNew": "رحلة جديدة",
+      "metaEditFallback": "تعديل الرحلة",
+      "metaEditPrefix": "تعديل",
+      "newDescription": "أدخل على الأقل العنوان والوجهة والمواعيد والسعر والسعة. يمكن نشر الرحلة بعد إضافة صورة غلاف.",
+      "lastUpdated": "آخر تحديث {date}",
+      "viewOnSite": "عرض على الموقع",
+      "sections": {
+        "content": {
+          "title": "المحتوى",
+          "description": "تظهر اللغتان للزوّار؛ يعتمد كل حقل على اللغة الأخرى عندما تكون إحداهما فارغة."
+        },
+        "images": { "title": "الصور" },
+        "schedule": { "title": "المواعيد والأسعار" },
+        "includes": { "title": "ما تشمله الرحلة" },
+        "visibility": {
+          "title": "الظهور",
+          "description": "تتبع الحالات القادمة والجارية والمكتملة مواعيد الرحلة تلقائيًا. اختر مسودة أو ملغاة فقط لتجاوز ذلك."
+        }
+      },
+      "fields": {
+        "title": "العنوان",
+        "titlePlaceholderAr": "رحلة الإسكندرية",
+        "titlePlaceholderEn": "Alexandria Day Trip",
+        "slug": "الرابط المختصر",
+        "slugHintWithValue": "ستكون الرحلة متاحة على /ar/trips/{slug} و /en/trips/{slug}",
+        "slugHintSuggested": "اتركه فارغًا لتوليد \"{slug}\" من العنوان.",
+        "slugHintEmpty": "اتركه فارغًا لتوليده من العنوان.",
+        "slugPlaceholder": "alexandria-day-trip",
+        "destination": "الوجهة",
+        "destinationPlaceholderAr": "الإسكندرية",
+        "destinationPlaceholderEn": "Alexandria",
+        "location": "تفاصيل الموقع",
+        "locationHint": "الأماكن المحددة التي تتم زيارتها، تظهر بجانب الوجهة.",
+        "shortDescription": "وصف مختصر",
+        "shortDescriptionHint": "جملة أو جملتان. تُستخدم في بطاقات الرحلات ونتائج البحث.",
+        "fullDescription": "الوصف الكامل",
+        "fullDescriptionHint": "الأسطر الفارغة تفصل بين الفقرات.",
+        "departureDate": "تاريخ المغادرة",
+        "returnDate": "تاريخ العودة",
+        "reservationsOpen": "فتح الحجز",
+        "reservationsOpenHint": "اختياري. اتركه فارغًا لقبول الحجوزات فورًا.",
+        "reservationsClose": "إغلاق الحجز",
+        "reservationsCloseHint": "اختياري. اتركه فارغًا لإبقاء الحجز مفتوحًا حتى موعد المغادرة.",
+        "price": "السعر",
+        "currency": "العملة",
+        "capacity": "السعة",
+        "capacityHint": "إجمالي المقاعد في هذه الرحلة.",
+        "availableSeats": "المقاعد المتاحة",
+        "availableSeatsHint": "المقاعد المتبقية. لا يمكن أن تتجاوز السعة.",
+        "activities": "الأنشطة والترفيه",
+        "activitiesPlaceholderAr": "جولة داخل القلعة",
+        "activitiesPlaceholderEn": "Tour inside the Citadel",
+        "included": "يشمله السعر",
+        "excluded": "لا يشمله السعر",
+        "notes": "ملاحظات مهمة",
+        "transport": "وسيلة النقل",
+        "meetingPoint": "نقطة التجمع",
+        "reservationInfo": "معلومات الحجز",
+        "reservationInfoHint": "طريقة الحجز والعربون وأي شروط.",
+        "status": "الحالة",
+        "displayOrder": "ترتيب العرض",
+        "displayOrderHint": "الأرقام الأصغر تظهر أولًا بين الرحلات المميّزة.",
+        "published": "منشورة",
+        "publishedHint": "ظاهرة على الموقع العام. تتطلب صورة غلاف.",
+        "featured": "مميّزة",
+        "featuredHint": "مُبرزة على الصفحة الرئيسية."
+      },
+      "editingLabel": "تعديل /{slug}",
+      "newTripLabel": "رحلة جديدة",
+      "cancel": "إلغاء",
+      "saveChanges": "حفظ التغييرات",
+      "createTrip": "إنشاء الرحلة",
+      "saving": "جارٍ الحفظ…",
+      "savedNotice": "تم حفظ التغييرات.",
+      "errorTitle": "لم يتم حفظ الرحلة",
+      "genericError": "تعذّر حفظ الرحلة. حاول مرة أخرى."
+    },
+    "imageManager": {
+      "coverTitle": "صورة الغلاف",
+      "coverHint": "تظهر على بطاقات الرحلات وأعلى صفحة الرحلة. مطلوبة قبل نشر الرحلة. JPG أو PNG أو WebP أو AVIF، حتى 8 ميجابايت.",
+      "altEn": "النص البديل (بالإنجليزية)",
+      "altAr": "النص البديل (بالعربية)",
+      "altPlaceholderEn": "What the photo shows",
+      "altPlaceholderAr": "وصف الصورة",
+      "removeCover": "إزالة الغلاف",
+      "uploadCover": "رفع صورة غلاف",
+      "uploading": "جارٍ الرفع…",
+      "galleryTitle": "معرض الصور",
+      "galleryHint": "صور تظهر في صفحة الرحلة وفي شريط الصفحة الرئيسية. يُحدَّد الترتيب بالأسهم؛ الصورة الأولى تظهر أولًا.",
+      "addGalleryImages": "إضافة صور للمعرض",
+      "moveEarlier": "تحريك الصورة {index} للأعلى",
+      "moveLater": "تحريك الصورة {index} للأسفل",
+      "removeImage": "إزالة الصورة {index}",
+      "uploadFailed": "فشل الرفع. حاول مرة أخرى."
+    },
+    "bilingualField": {
+      "languageTabLabel": "لغة {label}",
+      "oneItemPerLine": "عنصر واحد في كل سطر."
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "description": "بيانات الشركة وواتساب ومعلومات التواصل. تظهر التغييرات على الموقع فورًا.",
+      "sections": {
+        "company": { "title": "الشركة" },
+        "whatsapp": {
+          "title": "واتساب",
+          "description": "الرقم المستخدم في زر واتساب العائم وكل دعوات الحجز."
+        },
+        "contact": { "title": "معلومات التواصل" },
+        "seo": {
+          "title": "بيانات محركات البحث",
+          "description": "استبدال اختياري لعنوان ووصف الصفحة الرئيسية. اتركه فارغًا لاستخدام النص الافتراضي."
+        }
+      },
+      "fields": {
+        "companyName": "اسم الشركة",
+        "tagline": "الشعار النصي",
+        "taglineHint": "يظهر أسفل الشعار في الرأس وأعلى العنوان الرئيسي.",
+        "about": "نبذة عن الشركة",
+        "aboutHint": "تُستخدم في التذييل وكقصة في صفحة من نحن.",
+        "whatsappNumber": "رقم واتساب",
+        "whatsappNumberHint": "أدخل رمز الدولة، مثل ‎+20 101 275 2911. اتركه فارغًا لإخفاء الزر تمامًا.",
+        "whatsappMessage": "الرسالة الجاهزة",
+        "whatsappMessageHint": "ما تبدأ به محادثة الزائر. تُضيف صفحات الرحلات اسم الرحلة تلقائيًا.",
+        "phone": "الهاتف",
+        "email": "البريد الإلكتروني",
+        "address": "العنوان",
+        "workingHours": "ساعات العمل",
+        "mapUrl": "رابط الخريطة",
+        "mapUrlHint": "اختياري. رابط خرائط جوجل؛ يرتبط به العنوان في صفحة التواصل.",
+        "seoTitle": "عنوان الميتا",
+        "seoDescription": "وصف الميتا"
+      },
+      "save": "حفظ الإعدادات",
+      "saving": "جارٍ الحفظ…",
+      "savedNotice": "تم حفظ الإعدادات. أصبحت مباشرة على الموقع الآن.",
+      "genericError": "تعذّر حفظ الإعدادات. حاول مرة أخرى."
+    },
+    "social": {
+      "title": "روابط التواصل الاجتماعي",
+      "description": "تتحكم هذه الروابط في التذييل وصفحة التواصل والقائمة العائمة على الموقع العام.",
+      "addLink": {
+        "title": "إضافة رابط",
+        "allUsed": "كل المنصات المدعومة لديها رابط بالفعل. عدّل أو احذف رابطًا أدناه لتغييره.",
+        "platform": "المنصة",
+        "url": "الرابط",
+        "urlHint": "يجب أن يبدأ بـ https://",
+        "urlPlaceholder": "https://instagram.com/yourpage",
+        "displayName": "اسم العرض",
+        "displayNameHint": "اختياري. يُستخدم اسم المنصة افتراضيًا.",
+        "displayNamePlaceholder": "حسابنا على إنستغرام",
+        "add": "إضافة الرابط",
+        "adding": "جارٍ الإضافة…"
+      },
+      "empty": {
+        "title": "لا توجد روابط بعد",
+        "body": "أضف رابطًا أعلاه ليظهر في التذييل وصفحة التواصل والقائمة العائمة."
+      },
+      "urlLabel": "رابط {platform}",
+      "displayNameLabel": "اسم عرض {platform}",
+      "displayNamePlaceholder": "اسم العرض (اختياري)",
+      "visible": "ظاهر",
+      "hidden": "مخفي",
+      "moveEarlier": "تحريك {platform} للأعلى",
+      "moveLater": "تحريك {platform} للأسفل",
+      "remove": "إزالة {platform}",
+      "deleteDialog": {
+        "title": "إزالة هذا الرابط؟",
+        "description": "سيتم إزالة رابط {platform} من التذييل وصفحة التواصل والقائمة العائمة.",
+        "confirm": "إزالة"
+      },
+      "notice": {
+        "added": "تمت إضافة رابط {platform}.",
+        "removed": "تمت إزالة رابط {platform}."
+      },
+      "errors": {
+        "add": "تعذّرت إضافة الرابط.",
+        "update": "تعذّر تحديث الرابط.",
+        "remove": "تعذّرت إزالة الرابط."
+      }
+    },
+    "confirmDialog": {
+      "cancel": "إلغاء",
+      "deleting": "جارٍ الحذف…",
+      "closeDialog": "إغلاق النافذة"
+    }
   }
 }

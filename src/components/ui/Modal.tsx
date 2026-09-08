@@ -19,6 +19,7 @@ export function Modal({
   description,
   children,
   footer,
+  closeLabel = 'Close dialog',
 }: {
   open: boolean;
   onClose: () => void;
@@ -26,6 +27,7 @@ export function Modal({
   description?: string;
   children?: ReactNode;
   footer?: ReactNode;
+  closeLabel?: string;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -64,7 +66,7 @@ export function Modal({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close dialog"
+          aria-label={closeLabel}
           className="-me-1 rounded-md p-1.5 text-ink-soft transition-colors duration-150 hover:bg-surface-sunk hover:text-navy"
         >
           <Icon name="close" size={18} />
@@ -90,6 +92,9 @@ export function ConfirmDialog({
   title,
   description,
   confirmLabel = 'Delete',
+  cancelLabel = 'Cancel',
+  deletingLabel = 'Deleting…',
+  closeLabel,
   pending = false,
 }: {
   open: boolean;
@@ -98,6 +103,9 @@ export function ConfirmDialog({
   title: string;
   description: string;
   confirmLabel?: string;
+  cancelLabel?: string;
+  deletingLabel?: string;
+  closeLabel?: string;
   pending?: boolean;
 }) {
   return (
@@ -106,13 +114,14 @@ export function ConfirmDialog({
       onClose={onCancel}
       title={title}
       description={description}
+      closeLabel={closeLabel}
       footer={
         <>
           <Button variant="ghost" onClick={onCancel} disabled={pending}>
-            Cancel
+            {cancelLabel}
           </Button>
           <Button variant="danger" onClick={onConfirm} disabled={pending}>
-            {pending ? 'Deleting…' : confirmLabel}
+            {pending ? deletingLabel : confirmLabel}
           </Button>
         </>
       }

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 import { Alert } from '@/components/ui/Alert';
@@ -37,6 +38,8 @@ type SortKey = 'startDate' | 'title' | 'price';
 
 export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] }) {
   const router = useRouter();
+  const t = useTranslations('admin.trips');
+  const tConfirm = useTranslations('admin.confirmDialog');
 
   const [trips, setTrips] = useState(initialTrips);
   const [search, setSearch] = useState('');
@@ -87,24 +90,20 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
       });
 
       setTrips((current) => current.map((entry) => (entry.id === trip.id ? updated : entry)));
-      setNotice(
-        `"${updated.title.en || updated.title.ar}" is now ${
-          field === 'published'
-            ? updated.published
-              ? 'published'
-              : 'unpublished'
-            : updated.featured
-              ? 'featured'
-              : 'no longer featured'
-        }.`,
-      );
+
+      const title = updated.title.en || updated.title.ar;
+      const noticeKey =
+        field === 'published'
+          ? updated.published
+            ? 'notice.published'
+            : 'notice.unpublished'
+          : updated.featured
+            ? 'notice.featured'
+            : 'notice.unfeatured';
+      setNotice(t(noticeKey, { title }));
       router.refresh();
     } catch (caught) {
-      setError(
-        caught instanceof ApiClientError
-          ? caught.displayMessage
-          : 'Could not update the trip. Please try again.',
-      );
+      setError(caught instanceof ApiClientError ? caught.displayMessage : t('errors.update'));
     } finally {
       setPendingId(null);
     }
@@ -118,13 +117,11 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
     try {
       await api.delete(`/api/trips/${toDelete.id}`);
       setTrips((current) => current.filter((entry) => entry.id !== toDelete.id));
-      setNotice(`"${toDelete.title.en || toDelete.title.ar}" was deleted.`);
+      setNotice(t('notice.deleted', { title: toDelete.title.en || toDelete.title.ar }));
       setToDelete(null);
       router.refresh();
     } catch (caught) {
-      setError(
-        caught instanceof ApiClientError ? caught.displayMessage : 'Could not delete the trip.',
-      );
+      setError(caught instanceof ApiClientError ? caught.displayMessage : t('errors.delete'));
     } finally {
       setPendingId(null);
     }
@@ -134,7 +131,7 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
     <div className="flex flex-col gap-4">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <label className="relative sm:col-span-2">
-          <span className="sr-only">Search trips</span>
+          <span className="sr-only">{t('searchLabel')}</span>
           <Icon
             name="search"
             size={17}
@@ -143,34 +140,34 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search by title, destination or slug"
+            placeholder={t('searchPlaceholder')}
             className="ps-10"
             type="search"
           />
         </label>
 
         <label>
-          <span className="sr-only">Filter by status</span>
+          <span className="sr-only">{t('statusLabel')}</span>
           <Select value={status} onChange={(event) => setStatus(event.target.value as typeof status)}>
-            <option value="all">All statuses</option>
-            <option value="DRAFT">Draft</option>
-            <option value="UPCOMING">Upcoming</option>
-            <option value="ONGOING">Ongoing</option>
-            <option value="COMPLETED">Completed</option>
-            <option value="CANCELLED">Cancelled</option>
+            <option value="all">{t('statusAll')}</option>
+            <option value="DRAFT">{t('status.DRAFT')}</option>
+            <option value="UPCOMING">{t('status.UPCOMING')}</option>
+            <option value="ONGOING">{t('status.ONGOING')}</option>
+            <option value="COMPLETED">{t('status.COMPLETED')}</option>
+            <option value="CANCELLED">{t('status.CANCELLED')}</option>
           </Select>
         </label>
 
         <label>
-          <span className="sr-only">Filter by visibility</span>
+          <span className="sr-only">{t('visibilityLabel')}</span>
           <Select
             value={visibility}
             onChange={(event) => setVisibility(event.target.value as typeof visibility)}
           >
-            <option value="all">All trips</option>
-            <option value="published">Published only</option>
-            <option value="unpublished">Unpublished only</option>
-            <option value="featured">Featured only</option>
+            <option value="all">{t('visibilityAll')}</option>
+            <option value="published">{t('visibilityPublished')}</option>
+            <option value="unpublished">{t('visibilityUnpublished')}</option>
+            <option value="featured">{t('visibilityFeatured')}</option>
           </Select>
         </label>
       </div>
@@ -181,16 +178,12 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
       {visible.length === 0 ? (
         <EmptyState
           icon={trips.length === 0 ? 'plane' : 'search'}
-          title={trips.length === 0 ? 'No trips yet' : 'No trips match these filters'}
-          body={
-            trips.length === 0
-              ? 'Create your first trip to publish it on the site.'
-              : 'Try a different search term or clear the filters.'
-          }
+          title={trips.length === 0 ? t('empty.noTripsTitle') : t('empty.noMatchTitle')}
+          body={trips.length === 0 ? t('empty.noTripsBody') : t('empty.noMatchBody')}
           action={
             trips.length === 0 ? (
               <Button as={Link} href="/admin/trips/create" variant="primary">
-                Create a trip
+                {t('empty.createTrip')}
               </Button>
             ) : (
               <Button
@@ -201,7 +194,7 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                   setVisibility('all');
                 }}
               >
-                Clear filters
+                {t('empty.clearFilters')}
               </Button>
             )
           }
@@ -210,13 +203,13 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
         <div className="u-scroll-x rounded-lg border border-sand bg-surface">
           <table className="w-full min-w-[56rem] border-collapse text-body-sm">
             <caption className="sr-only">
-              Trips, {visible.length} of {trips.length} shown
+              {t('table.caption', { shown: visible.length, total: trips.length })}
             </caption>
 
             <thead>
               <tr className="border-b border-sand bg-surface-sunk text-caption">
                 <SortableHeader
-                  label="Trip"
+                  label={t('table.trip')}
                   active={sortKey === 'title'}
                   ascending={sortAsc}
                   onClick={() => {
@@ -225,10 +218,10 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                   }}
                 />
                 <th scope="col" className="px-4 py-3 text-start font-semibold text-ink-soft">
-                  Status
+                  {t('table.status')}
                 </th>
                 <SortableHeader
-                  label="Departure"
+                  label={t('table.departure')}
                   active={sortKey === 'startDate'}
                   ascending={sortAsc}
                   onClick={() => {
@@ -237,7 +230,7 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                   }}
                 />
                 <SortableHeader
-                  label="Price"
+                  label={t('table.price')}
                   active={sortKey === 'price'}
                   ascending={sortAsc}
                   onClick={() => {
@@ -246,13 +239,13 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                   }}
                 />
                 <th scope="col" className="px-4 py-3 text-start font-semibold text-ink-soft">
-                  Seats
+                  {t('table.seats')}
                 </th>
                 <th scope="col" className="px-4 py-3 text-start font-semibold text-ink-soft">
-                  Visibility
+                  {t('table.visibility')}
                 </th>
                 <th scope="col" className="px-4 py-3 text-end font-semibold text-ink-soft">
-                  Actions
+                  {t('table.actions')}
                 </th>
               </tr>
             </thead>
@@ -274,7 +267,9 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                     </td>
 
                     <td className="px-4 py-3">
-                      <Badge tone={STATUS_TONE[trip.effectiveStatus]}>{trip.effectiveStatus}</Badge>
+                      <Badge tone={STATUS_TONE[trip.effectiveStatus]}>
+                        {t(`status.${trip.effectiveStatus}`)}
+                      </Badge>
                     </td>
 
                     <td className="u-numeric px-4 py-3 text-ink-soft">
@@ -295,15 +290,15 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                           active={trip.published}
                           disabled={busy}
                           onClick={() => toggle(trip, 'published')}
-                          activeLabel="Published"
-                          inactiveLabel="Draft"
+                          activeLabel={t('published')}
+                          inactiveLabel={t('draft')}
                         />
                         <ToggleChip
                           active={trip.featured}
                           disabled={busy}
                           onClick={() => toggle(trip, 'featured')}
-                          activeLabel="Featured"
-                          inactiveLabel="Not featured"
+                          activeLabel={t('featured')}
+                          inactiveLabel={t('notFeatured')}
                         />
                       </div>
                     </td>
@@ -313,7 +308,7 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                         <Link
                           href={`/admin/trips/${trip.id}/edit`}
                           className="rounded-md p-2 text-ink-soft transition-colors duration-150 hover:bg-surface-sunk hover:text-navy"
-                          aria-label={`Edit ${trip.title.en || trip.title.ar}`}
+                          aria-label={t('editAction', { title: trip.title.en || trip.title.ar })}
                         >
                           <Icon name="image" size={17} />
                         </Link>
@@ -322,7 +317,7 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
                           type="button"
                           onClick={() => setToDelete(trip)}
                           disabled={busy}
-                          aria-label={`Delete ${trip.title.en || trip.title.ar}`}
+                          aria-label={t('deleteAction', { title: trip.title.en || trip.title.ar })}
                           className="rounded-md p-2 text-ink-soft transition-colors duration-150 hover:bg-danger/10 hover:text-danger disabled:opacity-50"
                         >
                           <Icon name="trash" size={17} />
@@ -342,12 +337,15 @@ export function TripTable({ initialTrips }: { initialTrips: TripWithDerived[] })
         onCancel={() => setToDelete(null)}
         onConfirm={confirmDelete}
         pending={pendingId === toDelete?.id}
-        title="Delete this trip?"
+        title={t('deleteDialog.title')}
         description={
           toDelete
-            ? `"${toDelete.title.en || toDelete.title.ar}" will be permanently removed, along with its gallery references. This cannot be undone.`
+            ? t('deleteDialog.description', { title: toDelete.title.en || toDelete.title.ar })
             : ''
         }
+        cancelLabel={tConfirm('cancel')}
+        deletingLabel={tConfirm('deleting')}
+        closeLabel={tConfirm('closeDialog')}
       />
     </div>
   );

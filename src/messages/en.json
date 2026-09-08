@@ -252,5 +252,300 @@
     },
     "about": { "title": "About us", "description": "Meet Twin for Travel and the way we plan and run our trips." },
     "contact": { "title": "Contact us", "description": "Reach us on WhatsApp, by phone or by email for bookings and enquiries." }
+  },
+  "admin": {
+    "language": { "label": "Language", "ar": "العربية", "en": "English" },
+    "login": {
+      "dashboardLabel": "Dashboard",
+      "authorisedOnly": "Authorised staff only.",
+      "heading": "Sign in",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "Password",
+      "signIn": "Sign in",
+      "signingIn": "Signing in…",
+      "genericError": "Something went wrong. Please try again."
+    },
+    "sidebar": {
+      "brandLabel": "Dashboard",
+      "openNavigation": "Open navigation",
+      "closeNavigation": "Close navigation",
+      "navLabel": "Dashboard",
+      "overview": "Overview",
+      "trips": "Trips",
+      "socialLinks": "Social links",
+      "settings": "Settings",
+      "signedInAs": "Signed in as",
+      "signOut": "Sign out",
+      "signingOut": "Signing out…"
+    },
+    "overview": {
+      "welcomeBack": "Welcome back, {name}",
+      "snapshot": "A snapshot of the trips on the public site.",
+      "newTrip": "New trip",
+      "cards": {
+        "total": { "label": "Total trips", "hint": "Every trip in the database" },
+        "upcoming": { "label": "Upcoming", "hint": "Announced and still to run" },
+        "completed": { "label": "Completed", "hint": "Finished and archived" },
+        "draft": { "label": "Drafts", "hint": "Not visible to visitors" },
+        "featured": { "label": "Featured", "hint": "Promoted on the homepage" },
+        "published": { "label": "Published", "hint": "Live on the public site" }
+      },
+      "nextDepartures": "Next departures",
+      "allTrips": "All trips",
+      "seats": "seats",
+      "empty": {
+        "title": "No upcoming trips",
+        "body": "Create a trip and publish it to see it here and on the public site.",
+        "action": "Create a trip"
+      }
+    },
+    "trips": {
+      "title": "Trips",
+      "description": "Create, edit, publish and archive the trips shown on the public site.",
+      "newTrip": "New trip",
+      "searchLabel": "Search trips",
+      "searchPlaceholder": "Search by title, destination or slug",
+      "statusLabel": "Filter by status",
+      "statusAll": "All statuses",
+      "status": {
+        "DRAFT": "Draft",
+        "UPCOMING": "Upcoming",
+        "ONGOING": "Ongoing",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled"
+      },
+      "visibilityLabel": "Filter by visibility",
+      "visibilityAll": "All trips",
+      "visibilityPublished": "Published only",
+      "visibilityUnpublished": "Unpublished only",
+      "visibilityFeatured": "Featured only",
+      "table": {
+        "caption": "Trips, {shown} of {total} shown",
+        "trip": "Trip",
+        "status": "Status",
+        "departure": "Departure",
+        "price": "Price",
+        "seats": "Seats",
+        "visibility": "Visibility",
+        "actions": "Actions"
+      },
+      "published": "Published",
+      "draft": "Draft",
+      "featured": "Featured",
+      "notFeatured": "Not featured",
+      "editAction": "Edit {title}",
+      "deleteAction": "Delete {title}",
+      "empty": {
+        "noTripsTitle": "No trips yet",
+        "noTripsBody": "Create your first trip to publish it on the site.",
+        "noMatchTitle": "No trips match these filters",
+        "noMatchBody": "Try a different search term or clear the filters.",
+        "createTrip": "Create a trip",
+        "clearFilters": "Clear filters"
+      },
+      "deleteDialog": {
+        "title": "Delete this trip?",
+        "description": "\"{title}\" will be permanently removed, along with its gallery references. This cannot be undone."
+      },
+      "notice": {
+        "published": "\"{title}\" is now published.",
+        "unpublished": "\"{title}\" is now unpublished.",
+        "featured": "\"{title}\" is now featured.",
+        "unfeatured": "\"{title}\" is now no longer featured.",
+        "deleted": "\"{title}\" was deleted."
+      },
+      "errors": {
+        "update": "Could not update the trip. Please try again.",
+        "delete": "Could not delete the trip."
+      }
+    },
+    "tripForm": {
+      "metaNew": "New trip",
+      "metaEditFallback": "Edit trip",
+      "metaEditPrefix": "Edit",
+      "newDescription": "Fill in at least a title, destination, dates, price and capacity. You can publish it once a cover image is set.",
+      "lastUpdated": "Last updated {date}",
+      "viewOnSite": "View on site",
+      "sections": {
+        "content": {
+          "title": "Content",
+          "description": "Both languages are shown to visitors; each field falls back to the other language when one is empty."
+        },
+        "images": { "title": "Images" },
+        "schedule": { "title": "Schedule & pricing" },
+        "includes": { "title": "What the trip includes" },
+        "visibility": {
+          "title": "Visibility",
+          "description": "Upcoming, ongoing and completed follow the trip's dates automatically. Choose Draft or Cancelled only to override that."
+        }
+      },
+      "fields": {
+        "title": "Title",
+        "titlePlaceholderAr": "رحلة الإسكندرية",
+        "titlePlaceholderEn": "Alexandria Day Trip",
+        "slug": "URL slug",
+        "slugHintWithValue": "The trip will live at /ar/trips/{slug} and /en/trips/{slug}",
+        "slugHintSuggested": "Leave blank to generate \"{slug}\" from the title.",
+        "slugHintEmpty": "Leave blank to generate one from the title.",
+        "slugPlaceholder": "alexandria-day-trip",
+        "destination": "Destination",
+        "destinationPlaceholderAr": "الإسكندرية",
+        "destinationPlaceholderEn": "Alexandria",
+        "location": "Location details",
+        "locationHint": "The specific sites visited, shown beside the destination.",
+        "shortDescription": "Short description",
+        "shortDescriptionHint": "One or two sentences. Used on trip cards and in search results.",
+        "fullDescription": "Full description",
+        "fullDescriptionHint": "Blank lines separate paragraphs.",
+        "departureDate": "Departure date",
+        "returnDate": "Return date",
+        "reservationsOpen": "Reservations open",
+        "reservationsOpenHint": "Optional. Leave blank to accept reservations immediately.",
+        "reservationsClose": "Reservations close",
+        "reservationsCloseHint": "Optional. Leave blank to keep them open until departure.",
+        "price": "Price",
+        "currency": "Currency",
+        "capacity": "Capacity",
+        "capacityHint": "Total seats on this trip.",
+        "availableSeats": "Available seats",
+        "availableSeatsHint": "Seats still open. Cannot exceed the capacity.",
+        "activities": "Activities & entertainment",
+        "activitiesPlaceholderAr": "جولة داخل القلعة",
+        "activitiesPlaceholderEn": "Tour inside the Citadel",
+        "included": "Included in the price",
+        "excluded": "Not included",
+        "notes": "Important notes",
+        "transport": "Transport",
+        "meetingPoint": "Meeting point",
+        "reservationInfo": "Reservation information",
+        "reservationInfoHint": "How to reserve, deposits, and any conditions.",
+        "status": "Status",
+        "displayOrder": "Display order",
+        "displayOrderHint": "Lower numbers appear first among featured trips.",
+        "published": "Published",
+        "publishedHint": "Visible on the public site. Requires a cover image.",
+        "featured": "Featured",
+        "featuredHint": "Promoted on the homepage."
+      },
+      "editingLabel": "Editing /{slug}",
+      "newTripLabel": "New trip",
+      "cancel": "Cancel",
+      "saveChanges": "Save changes",
+      "createTrip": "Create trip",
+      "saving": "Saving…",
+      "savedNotice": "Changes saved.",
+      "errorTitle": "The trip was not saved",
+      "genericError": "Could not save the trip. Please try again."
+    },
+    "imageManager": {
+      "coverTitle": "Cover image",
+      "coverHint": "Shown on trip cards and at the top of the trip page. Required before the trip can be published. JPG, PNG, WebP or AVIF, up to 8 MB.",
+      "altEn": "Alt text (English)",
+      "altAr": "Alt text (Arabic)",
+      "altPlaceholderEn": "What the photo shows",
+      "altPlaceholderAr": "وصف الصورة",
+      "removeCover": "Remove cover",
+      "uploadCover": "Upload a cover image",
+      "uploading": "Uploading…",
+      "galleryTitle": "Gallery",
+      "galleryHint": "Photographs shown on the trip page and in the homepage strip. Drag order is set with the arrows; the first image appears first.",
+      "addGalleryImages": "Add gallery images",
+      "moveEarlier": "Move image {index} earlier",
+      "moveLater": "Move image {index} later",
+      "removeImage": "Remove image {index}",
+      "uploadFailed": "The upload failed. Please try again."
+    },
+    "bilingualField": {
+      "languageTabLabel": "{label} language",
+      "oneItemPerLine": "One item per line."
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Company details, WhatsApp and contact information. Changes appear on the site immediately.",
+      "sections": {
+        "company": { "title": "Company" },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "description": "The number behind the floating button and every reservation call to action."
+        },
+        "contact": { "title": "Contact details" },
+        "seo": {
+          "title": "Search engine listing",
+          "description": "Optional overrides for the homepage title and description. Leave blank to use the built-in copy."
+        }
+      },
+      "fields": {
+        "companyName": "Company name",
+        "tagline": "Tagline",
+        "taglineHint": "Shown under the logo in the header and above the hero headline.",
+        "about": "About the company",
+        "aboutHint": "Used in the footer and as the story on the About page.",
+        "whatsappNumber": "WhatsApp number",
+        "whatsappNumberHint": "Include the country code, e.g. +20 101 275 2911. Leave blank to hide the button entirely.",
+        "whatsappMessage": "Pre-filled message",
+        "whatsappMessageHint": "What the visitor's chat opens with. Trip pages append the trip name automatically.",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "workingHours": "Opening hours",
+        "mapUrl": "Map link",
+        "mapUrlHint": "Optional. A Google Maps URL; the address links to it on the contact page.",
+        "seoTitle": "Meta title",
+        "seoDescription": "Meta description"
+      },
+      "save": "Save settings",
+      "saving": "Saving…",
+      "savedNotice": "Settings saved. They are live on the site now.",
+      "genericError": "Could not save the settings. Please try again."
+    },
+    "social": {
+      "title": "Social links",
+      "description": "These drive the footer, the contact page and the floating menu on the public site.",
+      "addLink": {
+        "title": "Add a link",
+        "allUsed": "Every supported platform already has a link. Edit or remove one below to change it.",
+        "platform": "Platform",
+        "url": "URL",
+        "urlHint": "Must start with https://",
+        "urlPlaceholder": "https://instagram.com/yourpage",
+        "displayName": "Display name",
+        "displayNameHint": "Optional. Defaults to the platform name.",
+        "displayNamePlaceholder": "Our Instagram",
+        "add": "Add link",
+        "adding": "Adding…"
+      },
+      "empty": {
+        "title": "No social links yet",
+        "body": "Add a link above and it appears in the footer, on the contact page and in the floating menu."
+      },
+      "urlLabel": "{platform} URL",
+      "displayNameLabel": "{platform} display name",
+      "displayNamePlaceholder": "Display name (optional)",
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "moveEarlier": "Move {platform} earlier",
+      "moveLater": "Move {platform} later",
+      "remove": "Remove {platform}",
+      "deleteDialog": {
+        "title": "Remove this link?",
+        "description": "The {platform} link will be removed from the footer, the contact page and the floating menu.",
+        "confirm": "Remove"
+      },
+      "notice": {
+        "added": "{platform} link added.",
+        "removed": "{platform} link removed."
+      },
+      "errors": {
+        "add": "Could not add the link.",
+        "update": "Could not update the link.",
+        "remove": "Could not remove the link."
+      }
+    },
+    "confirmDialog": {
+      "cancel": "Cancel",
+      "deleting": "Deleting…",
+      "closeDialog": "Close dialog"
+    }
   }
 }

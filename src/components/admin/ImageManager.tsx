@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 
 import { Alert } from '@/components/ui/Alert';
@@ -45,6 +46,7 @@ export function ImageManager({
   onGalleryChange: (images: TripImage[]) => void;
   error?: string;
 }) {
+  const t = useTranslations('admin.imageManager');
   const [uploading, setUploading] = useState<'cover' | 'gallery' | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const coverInput = useRef<HTMLInputElement>(null);
@@ -71,9 +73,7 @@ export function ImageManager({
         onGalleryChange([...gallery, ...uploaded]);
       }
     } catch (caught) {
-      setUploadError(
-        caught instanceof ApiClientError ? caught.message : 'The upload failed. Please try again.',
-      );
+      setUploadError(caught instanceof ApiClientError ? caught.message : t('uploadFailed'));
     } finally {
       setUploading(null);
       if (coverInput.current) coverInput.current.value = '';
@@ -105,12 +105,9 @@ export function ImageManager({
 
       <section>
         <h3 className="mb-1 text-body-sm font-semibold text-navy">
-          Cover image <span className="text-danger">*</span>
+          {t('coverTitle')} <span className="text-danger">*</span>
         </h3>
-        <p className="mb-3 text-caption text-ink-soft">
-          Shown on trip cards and at the top of the trip page. Required before the trip can be
-          published. JPG, PNG, WebP or AVIF, up to 8&nbsp;MB.
-        </p>
+        <p className="mb-3 text-caption text-ink-soft">{t('coverHint')}</p>
 
         {cover ? (
           <div className="flex flex-col gap-3 rounded-lg border border-sand bg-surface p-3 sm:flex-row">
@@ -124,26 +121,26 @@ export function ImageManager({
               </p>
 
               <label className="text-caption font-semibold text-navy">
-                Alt text (English)
+                {t('altEn')}
                 <Input
                   value={cover.alt.en}
                   onChange={(event) =>
                     onCoverChange({ ...cover, alt: { ...cover.alt, en: event.target.value } })
                   }
-                  placeholder="What the photo shows"
+                  placeholder={t('altPlaceholderEn')}
                   className="mt-1"
                 />
               </label>
 
               <label className="text-caption font-semibold text-navy">
-                Alt text (Arabic)
+                {t('altAr')}
                 <Input
                   dir="rtl"
                   value={cover.alt.ar}
                   onChange={(event) =>
                     onCoverChange({ ...cover, alt: { ...cover.alt, ar: event.target.value } })
                   }
-                  placeholder="وصف الصورة"
+                  placeholder={t('altPlaceholderAr')}
                   className="mt-1"
                 />
               </label>
@@ -154,13 +151,13 @@ export function ImageManager({
                 className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-md px-2 py-1 text-caption font-semibold text-danger hover:bg-danger/10"
               >
                 <Icon name="trash" size={15} />
-                Remove cover
+                {t('removeCover')}
               </button>
             </div>
           </div>
         ) : (
           <UploadTile
-            label={uploading === 'cover' ? 'Uploading…' : 'Upload a cover image'}
+            label={uploading === 'cover' ? t('uploading') : t('uploadCover')}
             busy={uploading === 'cover'}
             invalid={Boolean(error)}
             onClick={() => coverInput.current?.click()}
@@ -179,11 +176,8 @@ export function ImageManager({
       </section>
 
       <section>
-        <h3 className="mb-1 text-body-sm font-semibold text-navy">Gallery</h3>
-        <p className="mb-3 text-caption text-ink-soft">
-          Photographs shown on the trip page and in the homepage strip. Drag order is set with the
-          arrows; the first image appears first.
-        </p>
+        <h3 className="mb-1 text-body-sm font-semibold text-navy">{t('galleryTitle')}</h3>
+        <p className="mb-3 text-caption text-ink-soft">{t('galleryHint')}</p>
 
         {gallery.length > 0 ? (
           <ul className="mb-3 flex flex-col gap-3">
@@ -204,20 +198,20 @@ export function ImageManager({
 
                     <div className="flex items-center gap-1">
                       <IconButton
-                        label={`Move image ${index + 1} earlier`}
+                        label={t('moveEarlier', { index: index + 1 })}
                         disabled={index === 0}
                         onClick={() => move(index, -1)}
                         rotate
                       />
                       <IconButton
-                        label={`Move image ${index + 1} later`}
+                        label={t('moveLater', { index: index + 1 })}
                         disabled={index === gallery.length - 1}
                         onClick={() => move(index, 1)}
                       />
                       <button
                         type="button"
                         onClick={() => onGalleryChange(gallery.filter((_, i) => i !== index))}
-                        aria-label={`Remove image ${index + 1}`}
+                        aria-label={t('removeImage', { index: index + 1 })}
                         className="rounded-md p-1.5 text-ink-soft hover:bg-danger/10 hover:text-danger"
                       >
                         <Icon name="trash" size={16} />
@@ -228,13 +222,13 @@ export function ImageManager({
                   <Input
                     value={image.alt.en}
                     onChange={(event) => updateAlt(index, 'en', event.target.value)}
-                    placeholder="Alt text (English)"
+                    placeholder={t('altEn')}
                   />
                   <Input
                     dir="rtl"
                     value={image.alt.ar}
                     onChange={(event) => updateAlt(index, 'ar', event.target.value)}
-                    placeholder="النص البديل (بالعربية)"
+                    placeholder={t('altAr')}
                   />
                 </div>
               </li>
@@ -243,7 +237,7 @@ export function ImageManager({
         ) : null}
 
         <UploadTile
-          label={uploading === 'gallery' ? 'Uploading…' : 'Add gallery images'}
+          label={uploading === 'gallery' ? t('uploading') : t('addGalleryImages')}
           busy={uploading === 'gallery'}
           compact={gallery.length > 0}
           onClick={() => galleryInput.current?.click()}
